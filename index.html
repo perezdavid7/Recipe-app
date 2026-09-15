@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Recipe App V2</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <div class="wrap head">
+    <div>
+      <div class="brand">Recipe App</div>
+      <div class="subtitle">Production + Recipe Lab</div>
+    </div>
+    <span class="badge" id="recipeCountBadge">0 recipes</span>
+  </div>
+  <nav class="nav wrap" aria-label="App modes">
+    <button class="active" data-view="library">Library</button>
+    <button data-view="production">Production</button>
+    <button data-view="lab">Recipe Lab</button>
+    <button data-view="import">Import Recipe</button>
+    <button data-view="data">Data</button>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section id="view-library"></section>
+  <section id="view-production" class="hidden"></section>
+  <section id="view-lab" class="hidden"></section>
+  <section id="view-import" class="hidden"></section>
+  <section id="view-data" class="hidden"></section>
+</main>
+
+<div class="toast" id="toast"></div>
+<div id="sheetHost"></div>
+<input id="jsonImportFile" class="file-input" type="file" accept=".json,application/json">
+
+<script src="app.js"></script>
+</body>
+</html>

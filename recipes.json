@@ -1,0 +1,105 @@
+{
+  "appVersion": 2,
+  "recipes": [
+    {
+      "id": "cookie-001",
+      "name": "Chocolate Chip Cookies",
+      "category": "Bakery",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 24,
+        "unit": "cookies",
+        "text": "24 cookies"
+      },
+      "ingredients": [
+        {
+          "id": "flour",
+          "amount": 270,
+          "unit": "g",
+          "name": "All-purpose flour"
+        },
+        {
+          "id": "butter",
+          "amount": 170,
+          "unit": "g",
+          "name": "Unsalted butter"
+        },
+        {
+          "id": "brown-sugar",
+          "amount": 150,
+          "unit": "g",
+          "name": "Brown sugar"
+        },
+        {
+          "id": "white-sugar",
+          "amount": 100,
+          "unit": "g",
+          "name": "White sugar"
+        },
+        {
+          "id": "eggs",
+          "amount": 2,
+          "unit": "each",
+          "name": "Large eggs"
+        },
+        {
+          "id": "vanilla",
+          "amount": 10,
+          "unit": "mL",
+          "name": "Vanilla extract"
+        },
+        {
+          "id": "baking-soda",
+          "amount": 5,
+          "unit": "g",
+          "name": "Baking soda"
+        },
+        {
+          "id": "salt",
+          "amount": 4,
+          "unit": "g",
+          "name": "Salt"
+        },
+        {
+          "id": "chips",
+          "amount": 250,
+          "unit": "g",
+          "name": "Chocolate chips"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Preheat oven to 350\u00b0F (175\u00b0C).",
+          "videoUrl": ""
+        },
+        {
+          "id": "s2",
+          "text": "Cream the butter, brown sugar, and white sugar until smooth.",
+          "videoUrl": ""
+        },
+        {
+          "id": "s3",
+          "text": "Mix in the eggs and vanilla.",
+          "videoUrl": ""
+        },
+        {
+          "id": "s4",
+          "text": "Combine the dry ingredients, then mix them into the wet ingredients.",
+          "videoUrl": ""
+        },
+        {
+          "id": "s5",
+          "text": "Fold in the chocolate chips.",
+          "videoUrl": ""
+        },
+        {
+          "id": "s6",
+          "text": "Portion the dough and bake until the edges are set and the centers are still soft.",
+          "videoUrl": ""
+        }
+      ],
+      "tests": []
+    }
+  ]
+}
