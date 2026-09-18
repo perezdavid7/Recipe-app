@@ -1,16 +1,16 @@
 {
-  "appVersion": 2,
+  "appVersion": "2.4",
+  "buildName": "Forest Refresh",
   "recipes": [
     {
       "id": "cookie-001",
       "name": "Chocolate Chip Cookies",
       "category": "Bakery",
-      "officialVersion": 1,
+      "icon": "\ud83c\udf6a",
       "yield": {
-        "amount": 24,
-        "unit": "cookies",
         "text": "24 cookies"
       },
+      "officialVersion": 1,
       "ingredients": [
         {
           "id": "flour",
@@ -39,7 +39,7 @@
         {
           "id": "eggs",
           "amount": 2,
-          "unit": "each",
+          "unit": "egg",
           "name": "Large eggs"
         },
         {
@@ -70,7 +70,7 @@
       "steps": [
         {
           "id": "s1",
-          "text": "Preheat oven to 350\u00b0F (175\u00b0C).",
+          "text": "Preheat the oven to 350\u00b0F (175\u00b0C).",
           "videoUrl": ""
         },
         {
@@ -85,7 +85,7 @@
         },
         {
           "id": "s4",
-          "text": "Combine the dry ingredients, then mix them into the wet ingredients.",
+          "text": "Combine the flour, baking soda, and salt, then mix into the wet ingredients.",
           "videoUrl": ""
         },
         {
@@ -95,7 +95,127 @@
         },
         {
           "id": "s6",
-          "text": "Portion the dough and bake until the edges are set and the centers are still soft.",
+          "text": "Portion the dough and bake until the edges are set and the centers stay slightly soft.",
+          "videoUrl": ""
+        }
+      ],
+      "tests": []
+    },
+    {
+      "id": "salsa-001",
+      "name": "Salsa Roja",
+      "category": "Sauce",
+      "icon": "\ud83c\udf36\ufe0f",
+      "yield": {
+        "text": "3 cups"
+      },
+      "officialVersion": 1,
+      "ingredients": [
+        {
+          "id": "tomatoes",
+          "amount": 680,
+          "unit": "g",
+          "name": "Roasted tomatoes"
+        },
+        {
+          "id": "onion",
+          "amount": 120,
+          "unit": "g",
+          "name": "White onion"
+        },
+        {
+          "id": "garlic",
+          "amount": 4,
+          "unit": "clove",
+          "name": "Garlic cloves"
+        },
+        {
+          "id": "cilantro",
+          "amount": 20,
+          "unit": "g",
+          "name": "Cilantro"
+        },
+        {
+          "id": "salt",
+          "amount": 8,
+          "unit": "g",
+          "name": "Salt"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Blend all ingredients until smooth.",
+          "videoUrl": ""
+        },
+        {
+          "id": "s2",
+          "text": "Taste and adjust salt if needed.",
+          "videoUrl": ""
+        },
+        {
+          "id": "s3",
+          "text": "Chill before service.",
+          "videoUrl": ""
+        }
+      ],
+      "tests": []
+    },
+    {
+      "id": "marinade-001",
+      "name": "Chicken Marinade",
+      "category": "Main",
+      "icon": "\ud83c\udf57",
+      "yield": {
+        "text": "2 lbs"
+      },
+      "officialVersion": 1,
+      "ingredients": [
+        {
+          "id": "oil",
+          "amount": 120,
+          "unit": "mL",
+          "name": "Oil"
+        },
+        {
+          "id": "lime",
+          "amount": 60,
+          "unit": "mL",
+          "name": "Lime juice"
+        },
+        {
+          "id": "garlic",
+          "amount": 15,
+          "unit": "g",
+          "name": "Minced garlic"
+        },
+        {
+          "id": "salt",
+          "amount": 10,
+          "unit": "g",
+          "name": "Salt"
+        },
+        {
+          "id": "paprika",
+          "amount": 8,
+          "unit": "g",
+          "name": "Paprika"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Whisk all ingredients together.",
+          "videoUrl": ""
+        },
+        {
+          "id": "s2",
+          "text": "Coat the chicken thoroughly.",
+          "videoUrl": ""
+        },
+        {
+          "id": "s3",
+          "text": "Marinate at least 30 minutes before cooking.",
           "videoUrl": ""
         }
       ],
