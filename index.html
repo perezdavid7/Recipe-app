@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Recipe App V2.2</title>
+<title>Recipe App V2.3</title>
 <style>
 
 :root{
@@ -79,15 +79,82 @@ main{padding-bottom:50px}
 .file-input{display:none}
 .inline-select{max-width:220px}
 .sticky-actions{position:sticky;bottom:0;background:rgba(246,244,239,.97);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:10px 0 calc(10px + env(safe-area-inset-bottom));margin-top:16px}
-.timer-box{margin-top:9px;padding:10px;border:1px solid var(--line);border-radius:12px;background:#faf8f4}
-.timer-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.timer-row input{width:92px;min-height:40px}
-.timer-display{font-weight:900;font-variant-numeric:tabular-nums}
-.timer-display.overdue{color:var(--bad)}
-.timer-display.running{color:var(--good)}
-.timer-summary{margin:12px 0;padding:11px;border-radius:13px;background:#f3f7f4;border:1px solid #d9e8de}
-.prod-step-content{flex:1;min-width:0}
-.alert-status{font-size:.82rem;color:var(--muted);margin-top:6px}
+
+
+/* V2.3 production UI — glanceable, compact, kitchen-first */
+:root{
+  --surface:#ffffff;--surface-soft:#fbfaf7;--accent-2:#6f3025;--timer:#a05d16;
+  --timer-soft:#fff4df;--complete:#edf5ef;--focus:0 0 0 3px rgba(139,63,47,.16);
+}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none;box-shadow:var(--focus)}
+.production-screen{display:grid;gap:14px}
+.prod-topbar{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.prod-title{margin:0;font-size:1.45rem;letter-spacing:-.02em}
+.prod-subtitle{color:var(--muted);font-size:.88rem;margin-top:3px;max-width:620px}
+.prod-hero{background:linear-gradient(145deg,#fff 0%,#fbf7f3 100%);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:16px}
+.prod-recipe-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(120px,170px);gap:12px;align-items:end}
+.prod-recipe-name{font-size:1.24rem;font-weight:900;line-height:1.18;letter-spacing:-.02em}
+.prod-kicker{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:900;color:var(--accent);margin-bottom:5px}
+.prod-progress-wrap{margin-top:14px}
+.prod-progress-line{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}
+.prod-progress-line strong{font-size:.86rem}
+.prod-progress-line span{font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.prod-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:820px){.prod-grid{grid-template-columns:.92fr 1.28fr}.prod-hero{padding:19px}.prod-title{font-size:1.65rem}}
+.prod-panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:0 5px 18px rgba(28,22,16,.045);overflow:hidden}
+.prod-panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 15px 11px;border-bottom:1px solid #eee9e2;background:var(--surface-soft)}
+.prod-panel-head h3{margin:0;font-size:1rem}
+.prod-panel-head .count{font-size:.76rem;color:var(--muted);font-weight:800}
+.prod-list{padding:6px 10px 10px}
+.prod-item{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;padding:12px 5px;border-bottom:1px solid #eeeae4;transition:.18s ease}
+.prod-item:last-child{border-bottom:0}
+.prod-item input[type=checkbox]{width:23px;height:23px;min-height:23px;margin:1px 0 0;accent-color:var(--good)}
+.prod-item.done{background:linear-gradient(90deg,rgba(47,111,78,.055),transparent);border-radius:10px}
+.prod-item.done .prod-main{opacity:.55}
+.prod-item.done .prod-step-text{text-decoration:line-through;text-decoration-thickness:1px}
+.prod-main{min-width:0}
+.prod-ingredient-line{font-size:.97rem;line-height:1.35}
+.prod-ingredient-line strong{font-weight:900}
+.prod-step{grid-template-columns:28px 34px minmax(0,1fr)}
+.prod-step .stepnum{width:30px;height:30px;font-size:.85rem;background:var(--accent-soft);color:var(--accent);margin-top:-2px}
+.prod-step.done .stepnum{background:#e2eee6;color:var(--good)}
+.prod-step-text{font-size:1rem;line-height:1.43;font-weight:650}
+.prod-step-video{display:inline-block;margin-top:6px;font-size:.82rem;font-weight:800;color:var(--accent)}
+.timer-chip-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:8px}
+.timer-chip{min-height:34px!important;padding:6px 10px!important;border-radius:999px!important;background:var(--timer-soft)!important;color:#7f480f!important;border:1px solid #eed6ae!important;font-size:.8rem!important;font-weight:900!important}
+.timer-chip.running{background:#e9f4ed!important;color:var(--good)!important;border-color:#cfe2d5!important;font-variant-numeric:tabular-nums}
+.timer-chip.overdue{background:#fae7e7!important;color:var(--bad)!important;border-color:#e7c2c2!important}
+.timer-action{min-height:32px!important;padding:5px 8px!important;font-size:.76rem!important}
+.active-timers{position:sticky;top:118px;z-index:12;display:grid;gap:7px;margin:0 2px}
+.active-timer{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;border:1px solid #ead6b8;background:rgba(255,248,236,.97);backdrop-filter:blur(10px);border-radius:13px;padding:9px 10px;box-shadow:0 7px 22px rgba(45,32,18,.10)}
+.active-timer.overdue{border-color:#e2bbbb;background:#fff1f1}
+.active-timer-label{font-size:.8rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.active-timer-time{font-size:.88rem;font-weight:900;font-variant-numeric:tabular-nums}
+.prod-options{margin-top:11px;border-top:1px solid #eee9e2;padding-top:9px}
+.prod-options summary{cursor:pointer;list-style:none;color:var(--muted);font-size:.8rem;font-weight:850;display:inline-flex;align-items:center;gap:5px}
+.prod-options summary::-webkit-details-marker{display:none}
+.prod-options summary::before{content:'⚙';font-size:.84rem}
+.prod-options[open] summary{color:var(--ink)}
+.prod-options-body{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.prod-options-note{font-size:.75rem;color:var(--muted);margin-top:6px;max-width:680px}
+.prod-footer-actions{display:flex;justify-content:flex-end;margin-top:2px}
+.prod-footer-actions button{background:transparent;color:var(--bad);border:1px solid #e2c8c8;min-height:38px;font-size:.82rem}
+@media(max-width:520px){
+  .prod-recipe-row{grid-template-columns:1fr}.prod-recipe-row select{max-width:none!important}
+  .prod-topbar .inline-select{max-width:100%;width:100%}
+  .prod-step{grid-template-columns:26px 31px minmax(0,1fr)}
+  .prod-list{padding-left:8px;padding-right:8px}
+}
+
+/* Import/review: timers are explicitly attached to a step, never globally shown */
+.imp-step-card{border:1px solid var(--line);border-radius:14px;padding:11px;margin-bottom:9px;background:#fff}
+.imp-step-main{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:9px;align-items:start}
+.imp-timer-config{margin:8px 0 0 39px;padding-top:8px;border-top:1px dashed #e4ded6}
+.imp-timer-toggle{display:flex;align-items:center;gap:8px;font-size:.83rem;font-weight:800;color:var(--ink);margin:0}
+.imp-timer-toggle input{width:19px;height:19px;min-height:19px;margin:0;accent-color:var(--accent)}
+.imp-timer-fields{display:flex;align-items:center;gap:7px;margin-top:8px;max-width:280px}
+.imp-timer-fields input{max-width:110px;min-height:40px}
+@media(max-width:520px){.imp-step-main{grid-template-columns:30px minmax(0,1fr)}.imp-step-main .remove-step{grid-column:2;justify-self:start}.imp-timer-config{margin-left:39px}}
 
 </style>
 </head>
@@ -96,7 +163,7 @@ main{padding-bottom:50px}
   <div class="wrap head">
     <div>
       <div class="brand">Recipe App</div>
-      <div class="subtitle">Production + Recipe Lab · V2.2</div>
+      <div class="subtitle">Production + Recipe Lab · V2.3</div>
     </div>
     <span class="badge" id="recipeCountBadge">0 recipes</span>
   </div>
@@ -151,14 +218,14 @@ const UNIT_ALIASES = {
 const UNICODE_FRACTIONS = {"¼":0.25,"⅓":1/3,"½":0.5,"⅔":2/3,"¾":0.75,"⅛":0.125,"⅜":0.375,"⅝":0.625,"⅞":0.875};
 const FRACTION_BUTTONS = [["¼",0.25],["⅓",1/3],["½",0.5],["⅔",2/3],["¾",0.75]];
 
-let state = {appVersion:2, recipes:[]};
+let state = {appVersion:2.3, recipes:[]};
 let activeView = "library";
 let selectedRecipeId = null;
 let labDraft = null;
 let importDraft = null;
 let unitPickerTarget = null;
-let timerAudioCtx = null;
 let productionTimerTickId = null;
+let timerAudioCtx = null;
 
 const $ = (s, root=document) => root.querySelector(s);
 const $$ = (s, root=document) => [...root.querySelectorAll(s)];
@@ -182,10 +249,10 @@ function loadStored(){
   catch(e){ return null; }
 }
 function normalizeState(){
-  state ||= {appVersion:2.2,recipes:[]};
+  state ||= {appVersion:2.3,recipes:[]};
   state.recipes ||= [];
   state.productionSessions ||= {};
-  state.appVersion = 2.2;
+  state.appVersion = 2.3;
 }
 function newProductionSession(recipe, scale=1){
   return {
@@ -226,6 +293,12 @@ function guessTimerMinutes(text){
   if(sec){total+=Number(sec[1])/60;found=true}
   return found ? Math.round(total*100)/100 : null;
 }
+function configuredTimerMinutes(step,session,key){
+  const sessionValue=Number(session?.timerMinutes?.[key]);
+  if(Number.isFinite(sessionValue)&&sessionValue>0) return sessionValue;
+  const recipeValue=Number(step?.timerMinutes);
+  return Number.isFinite(recipeValue)&&recipeValue>0 ? recipeValue : null;
+}
 async function loadSeed(){
   if (window.RECIPE_APP_SEED) return clone(window.RECIPE_APP_SEED);
   const resp = await fetch("recipes.json",{cache:"no-store"});
@@ -238,7 +311,7 @@ async function init(){
   else{
     try{ state=await loadSeed(); }
     catch(e){
-      state={appVersion:2.2,recipes:[]};
+      state={appVersion:2.3,recipes:[]};
       toast("Open through a local/web server, or import recipes.json in Data.");
     }
   }
@@ -321,36 +394,55 @@ function renderProduction(){
   if(!getRecipe()) selectedRecipeId=state.recipes[0].id;
   const r=getRecipe(), session=getProductionSession();
   host.innerHTML=`
-    <div class="card">
-      <div class="row between">
-        <div><h2>Production Mode</h2><div class="meta">Progress auto-saves on this device and resumes after the screen turns off or the app is reopened.</div></div>
+    <div class="production-screen">
+      <div class="prod-topbar">
+        <div>
+          <h2 class="prod-title">Production</h2>
+          <div class="prod-subtitle">A clean prep view for the current batch. Checks, batch size, and active timers save automatically on this device.</div>
+        </div>
         ${recipeSelector("prodRecipe")}
       </div>
-      <div class="divider"></div>
-      <div class="row between">
-        <div><div style="font-weight:900;font-size:1.15rem">${esc(r.name)}</div><div class="small">Official v${r.officialVersion}.0 · ${esc(r.yield?.text||"Yield not set")}</div></div>
-        <select id="prodScale" style="max-width:160px">
-          <option value=".5">½ batch</option><option value="1">1 batch</option><option value="1.5">1½ batches</option><option value="2">2 batches</option><option value="3">3 batches</option>
-        </select>
-      </div>
-      <div class="actions" style="margin-top:10px">
-        <button class="small" id="enableTimerAlerts">Enable timer alerts</button>
-        <button class="ghost small" id="testTimerAlert">Test alert</button>
-      </div>
-      <div class="alert-status" id="timerAlertStatus"></div>
-      <div id="activeTimerSummary"></div>
-      <div style="margin:14px 0"><div class="row between"><span class="small">Prep progress</span><span class="small" id="prodProgressText">0%</span></div><div class="progress"><div id="prodProgressBar"></div></div></div>
-      <div class="grid two">
-        <div>
-          <h3>Ingredients</h3>
-          <div id="prodIngredients"></div>
+
+      <section class="prod-hero">
+        <div class="prod-recipe-row">
+          <div>
+            <div class="prod-kicker">Current batch</div>
+            <div class="prod-recipe-name">${esc(r.name)}</div>
+            <div class="small" style="margin-top:4px">Official v${r.officialVersion}.0 · ${esc(r.yield?.text||"Yield not set")}</div>
+          </div>
+          <div>
+            <label for="prodScale" style="font-size:.76rem;color:var(--muted);margin-bottom:5px">Batch size</label>
+            <select id="prodScale">
+              <option value=".5">½ batch</option><option value="1">1 batch</option><option value="1.5">1½ batches</option><option value="2">2 batches</option><option value="3">3 batches</option>
+            </select>
+          </div>
         </div>
-        <div>
-          <h3>Process</h3>
-          <div id="prodSteps"></div>
+        <div class="prod-progress-wrap">
+          <div class="prod-progress-line"><strong>Batch progress</strong><span id="prodProgressText">0 of 0 · 0%</span></div>
+          <div class="progress"><div id="prodProgressBar"></div></div>
         </div>
+        <details class="prod-options">
+          <summary>Timer alerts & batch options</summary>
+          <div class="prod-options-body">
+            <button class="small" id="enableTimerAlerts">Enable timer alerts</button>
+            <button class="ghost small" id="testTimerAlert">Test alert</button>
+          </div>
+          <div class="prod-options-note" id="timerAlertStatus"></div>
+        </details>
+      </section>
+      <div class="active-timers" id="activeTimerSummary"></div>
+
+      <div class="prod-grid">
+        <section class="prod-panel">
+          <div class="prod-panel-head"><h3>Ingredients</h3><span class="count">${r.ingredients.length} items</span></div>
+          <div class="prod-list" id="prodIngredients"></div>
+        </section>
+        <section class="prod-panel">
+          <div class="prod-panel-head"><h3>Process</h3><span class="count">${r.steps.length} steps</span></div>
+          <div class="prod-list" id="prodSteps"></div>
+        </section>
       </div>
-      <div class="actions" style="margin-top:14px"><button class="danger" id="resetProd">Start New Batch / Reset Progress</button></div>
+      <div class="prod-footer-actions"><button id="resetProd">Start New Batch / Reset Progress</button></div>
     </div>`;
   $("#prodScale").value=String(session.scale||1);
   $("#prodRecipe").addEventListener("change",e=>{selectedRecipeId=e.target.value;renderProduction()});
@@ -368,22 +460,22 @@ function renderProdChecklist(){
   const ingHost=$("#prodIngredients"), stepHost=$("#prodSteps");
   ingHost.innerHTML=r.ingredients.map((i,idx)=>{
     const key=ingredientKey(i,idx), checked=!!session.ingredientChecks[key];
-    return `<label class="checkline ${checked?"done":""}">
+    return `<label class="prod-item ${checked?"done":""}">
       <input type="checkbox" class="prod-check" data-kind="ingredient" data-key="${esc(key)}" ${checked?"checked":""}>
-      <span><strong>${fmt(scaledAmount(i.amount,scale))} ${esc(i.unit)}</strong> ${esc(i.name)}</span>
+      <span class="prod-main prod-ingredient-line"><strong>${fmt(scaledAmount(i.amount,scale))} ${esc(i.unit)}</strong> ${esc(i.name)}</span>
     </label>`;
   }).join("");
   stepHost.innerHTML=r.steps.map((s,idx)=>{
     const key=stepKey(s,idx), checked=!!session.stepChecks[key], timer=session.timers[key];
-    const suggested=session.timerMinutes[key] ?? s.timerMinutes ?? guessTimerMinutes(s.text) ?? "";
-    return `<div class="checkline ${checked?"done":""}">
-      <input type="checkbox" class="prod-check" data-kind="step" data-key="${esc(key)}" ${checked?"checked":""}>
+    const minutes=configuredTimerMinutes(s,session,key);
+    const timerUi=timer ? timerRunningHtml(key,timer) : (minutes ? `<div class="timer-chip-row"><button type="button" class="timer-chip start-step-timer" data-key="${esc(key)}">⏱ ${esc(fmt(minutes))} min · Start timer</button></div>` : "");
+    return `<div class="prod-item prod-step ${checked?"done":""}">
+      <input type="checkbox" class="prod-check" data-kind="step" data-key="${esc(key)}" ${checked?"checked":""} aria-label="Complete step ${idx+1}">
       <span class="stepnum">${idx+1}</span>
-      <div class="prod-step-content">
-        <div>${esc(s.text)}${s.videoUrl?`<div><a href="${esc(s.videoUrl)}" target="_blank" rel="noopener">Watch step video</a></div>`:""}</div>
-        <div class="timer-box" data-step-timer="${esc(key)}">
-          ${timer ? timerRunningHtml(key,timer) : `<div class="timer-row"><input class="timer-minutes" inputmode="decimal" type="number" min="0.1" step="0.5" data-key="${esc(key)}" value="${esc(suggested)}" placeholder="Minutes"><button type="button" class="good small start-step-timer" data-key="${esc(key)}">Start Timer</button></div><div class="small" style="margin-top:5px">Optional reminder for this step.</div>`}
-        </div>
+      <div class="prod-main">
+        <div class="prod-step-text">${esc(s.text)}</div>
+        ${s.videoUrl?`<a class="prod-step-video" href="${esc(s.videoUrl)}" target="_blank" rel="noopener">Watch step video</a>`:""}
+        ${timerUi}
       </div>
     </div>`;
   }).join("");
@@ -391,14 +483,8 @@ function renderProdChecklist(){
     const key=c.dataset.key;
     if(c.dataset.kind==="ingredient") session.ingredientChecks[key]=c.checked;
     else session.stepChecks[key]=c.checked;
-    c.closest(".checkline").classList.toggle("done",c.checked);
+    c.closest(".prod-item").classList.toggle("done",c.checked);
     saveProductionSession(session); updateProdProgress();
-  }));
-  $$(".timer-minutes",stepHost).forEach(el=>el.addEventListener("input",e=>{
-    const v=Number(e.target.value);
-    if(Number.isFinite(v)&&v>0) session.timerMinutes[e.target.dataset.key]=v;
-    else delete session.timerMinutes[e.target.dataset.key];
-    saveProductionSession(session);
   }));
   $$(".start-step-timer",stepHost).forEach(b=>b.addEventListener("click",()=>startStepTimer(b.dataset.key)));
   $$(".add-five",stepHost).forEach(b=>b.addEventListener("click",()=>addTimerMinutes(b.dataset.key,5)));
@@ -407,11 +493,12 @@ function renderProdChecklist(){
   updateActiveTimerSummary();
 }
 function timerRunningHtml(key,timer){
-  return `<div class="timer-row"><span class="timer-display" data-timer-display="${esc(key)}">${esc(timerDisplayText(timer))}</span><button type="button" class="small add-five" data-key="${esc(key)}">+5 min</button><button type="button" class="ghost small dismiss-timer" data-key="${esc(key)}">Dismiss</button></div><div class="small" style="margin-top:5px">Started ${new Date(timer.startedAt).toLocaleTimeString([], {hour:"numeric",minute:"2-digit"})}</div>`;
+  const overdue=Number(timer.endAt)<=Date.now();
+  return `<div class="timer-chip-row"><span class="timer-chip ${overdue?"overdue":"running"}" data-timer-display="${esc(key)}">${esc(timerDisplayText(timer))}</span><button type="button" class="ghost timer-action add-five" data-key="${esc(key)}">+5 min</button><button type="button" class="ghost timer-action dismiss-timer" data-key="${esc(key)}">Dismiss</button></div>`;
 }
 function timerDisplayText(timer){
   const diff=Number(timer.endAt)-Date.now();
-  return diff>0 ? `⏱ ${formatTimerDuration(diff)} remaining` : `⚠ Overdue by ${formatTimerDuration(Math.abs(diff))}`;
+  return diff>0 ? `⏱ ${formatTimerDuration(diff)} remaining` : `⚠ ${formatTimerDuration(Math.abs(diff))} overdue`;
 }
 function formatTimerDuration(ms){
   const sec=Math.max(0,Math.floor(ms/1000));
@@ -426,19 +513,18 @@ function updateProdProgress(){
 }
 function startNewProductionBatch(){
   const r=getRecipe(), current=getProductionSession(); if(!r||!current) return;
-  if(!confirm("Start a new batch? This clears the saved checks and timers for this recipe.")) return;
+  if(!confirm("Start a new batch? This clears the saved checks and active timers for this recipe.")) return;
   state.productionSessions[r.id]=newProductionSession(r,current.scale||1);
   saveState(); renderProduction(); toast("New production batch started");
 }
 function startStepTimer(key){
   const r=getRecipe(), session=getProductionSession(); if(!r||!session) return;
-  const input=$(`.timer-minutes[data-key="${CSS.escape(key)}"]`);
-  const mins=Number(input?.value ?? session.timerMinutes[key]);
-  if(!Number.isFinite(mins)||mins<=0){toast("Enter the timer minutes first");return}
   const idx=r.steps.findIndex((s,i)=>stepKey(s,i)===key), step=r.steps[idx];
+  const mins=configuredTimerMinutes(step,session,key);
+  if(!Number.isFinite(Number(mins))||Number(mins)<=0){toast("This step does not have a timer configured");return}
   const now=Date.now();
-  session.timerMinutes[key]=mins;
-  session.timers[key]={stepId:key,stepNumber:idx+1,label:step?.text||"Recipe step",durationMinutes:mins,startedAt:now,endAt:now+mins*60000,notified:false};
+  session.timerMinutes[key]=Number(mins);
+  session.timers[key]={stepId:key,stepNumber:idx+1,label:step?.text||"Recipe step",durationMinutes:Number(mins),startedAt:now,endAt:now+Number(mins)*60000,notified:false};
   saveProductionSession(session); armTimerAudio(); renderProdChecklist(); tickProductionTimers(false); toast(`Timer started for ${fmt(mins)} min`);
 }
 function addTimerMinutes(key,mins){
@@ -452,10 +538,10 @@ function dismissStepTimer(key){
 }
 function updateActiveTimerSummary(){
   const host=$("#activeTimerSummary"), session=getProductionSession(); if(!host||!session) return;
-  const timers=Object.values(session.timers||{});
+  const timers=Object.values(session.timers||{}).sort((a,b)=>Number(a.endAt)-Number(b.endAt));
   if(!timers.length){host.innerHTML="";return}
-  const overdue=timers.filter(t=>Number(t.endAt)<=Date.now()).length;
-  host.innerHTML=`<div class="timer-summary"><strong>${timers.length} active timer${timers.length===1?"":"s"}</strong>${overdue?` · <span style="color:var(--bad);font-weight:900">${overdue} need${overdue===1?"s":""} attention</span>`:""}<div class="small">Timers use saved finish times, so the countdown corrects itself when you return to the app.</div></div>`;
+  const t=timers[0], overdue=Number(t.endAt)<=Date.now(), extra=timers.length-1;
+  host.innerHTML=`<div class="active-timer ${overdue?"overdue":""}"><div><div style="font-size:.76rem;font-weight:900;color:${overdue?'var(--bad)':'var(--timer)'}">${overdue?'Timer needs attention':'Active timer'}${extra?` · +${extra} more`:''}</div><div class="active-timer-label">Step ${esc(t.stepNumber||"")} · ${esc(t.label||"Timed step")}</div></div><div class="active-timer-time" data-summary-timer="${esc(t.stepId)}">${esc(timerDisplayText(t))}</div></div>`;
 }
 function startProductionTimerTicker(){
   if(productionTimerTickId) clearInterval(productionTimerTickId);
@@ -478,9 +564,10 @@ function tickProductionTimers(fromResume=false){
     Object.entries(session?.timers||{}).forEach(([key,timer])=>{
       const el=document.querySelector(`[data-timer-display="${CSS.escape(key)}"]`);
       if(el){el.textContent=timerDisplayText(timer);el.classList.toggle("overdue",Number(timer.endAt)<=Date.now());el.classList.toggle("running",Number(timer.endAt)>Date.now())}
+      const summary=document.querySelector(`[data-summary-timer="${CSS.escape(key)}"]`);
+      if(summary){summary.textContent=timerDisplayText(timer);summary.closest(".active-timer")?.classList.toggle("overdue",Number(timer.endAt)<=Date.now())}
     });
-    updateActiveTimerSummary();
-    if(fromResume) updateTimerAlertStatus();
+    if(fromResume){updateActiveTimerSummary();updateTimerAlertStatus()}
   }
 }
 function fireTimerAlert(recipeId,timer){
@@ -523,10 +610,10 @@ async function requestTimerAlerts(){
 }
 function updateTimerAlertStatus(){
   const el=$("#timerAlertStatus"); if(!el) return;
-  if(!("Notification" in window)) el.textContent="Timers and progress will still save. Lock-screen system notifications are not available in this browser/file mode.";
-  else if(Notification.permission==="granted") el.textContent="System notification permission is enabled. Use Test alert on each phone to verify sound/vibration behavior.";
-  else if(Notification.permission==="denied") el.textContent="System notifications are blocked for this app. Timers still persist and show overdue when the app is reopened.";
-  else el.textContent="Enable timer alerts if you want this browser to attempt a phone notification when a timer finishes.";
+  if(!("Notification" in window)) el.textContent="Timers still save their finish time and will show the correct remaining or overdue time when you return.";
+  else if(Notification.permission==="granted") el.textContent="System notification permission is enabled. Phone/browser power management can still affect background delivery, so test it on each device.";
+  else if(Notification.permission==="denied") el.textContent="System notifications are blocked. Timers still persist and show overdue when the app is reopened.";
+  else el.textContent="Enable alerts if you want this browser to attempt a notification when a configured step timer finishes.";
 }
 function testTimerAlert(){
   armTimerAudio(); playTimerBeep();
@@ -856,21 +943,39 @@ function renderImportIngredients(){
 function renderImportSteps(){
   const host=$("#impSteps");
   if(!importDraft.steps.length){host.innerHTML=`<div class="empty">No process steps detected. Add them manually.</div>`;return}
-  host.innerHTML=importDraft.steps.map((s,idx)=>`
-    <div style="border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:9px">
-      <div class="row" style="align-items:flex-start">
+  host.innerHTML=importDraft.steps.map((s,idx)=>{
+    const timed=Number(s.timerMinutes)>0;
+    return `<div class="imp-step-card">
+      <div class="imp-step-main">
         <span class="stepnum">${idx+1}</span>
-        <textarea class="imp-step" data-idx="${idx}" style="flex:1;min-width:200px">${esc(s.text)}</textarea>
+        <textarea class="imp-step" data-idx="${idx}">${esc(s.text)}</textarea>
         <button class="ghost small remove-step" data-idx="${idx}">Remove</button>
       </div>
-      <div class="row" style="margin:8px 0 0 38px"><label style="margin:0">Recommended timer</label><input class="imp-step-timer" data-idx="${idx}" inputmode="decimal" type="number" min="0" step="0.5" value="${esc(s.timerMinutes ?? guessTimerMinutes(s.text) ?? "")}" placeholder="Minutes" style="width:100px"><span class="small">minutes (optional)</span></div>
-    </div>`).join("");
-  $$(".imp-step",host).forEach(el=>el.addEventListener("input",e=>{
-    const i=Number(e.target.dataset.idx); importDraft.steps[i].text=e.target.value;
-    if(importDraft.steps[i].timerMinutes==null) importDraft.steps[i].timerMinutes=guessTimerMinutes(e.target.value);
+      <div class="imp-timer-config">
+        <label class="imp-timer-toggle"><input type="checkbox" class="imp-timed" data-idx="${idx}" ${timed?"checked":""}> Timed step</label>
+        <div class="imp-timer-fields ${timed?"":"hidden"}" data-timer-fields="${idx}">
+          <input class="imp-timer-minutes" data-idx="${idx}" inputmode="decimal" type="number" min="0.1" step="0.5" value="${timed?esc(fmt(s.timerMinutes)):""}" placeholder="Minutes">
+          <span class="small">recommended minutes</span>
+        </div>
+        <div class="small" style="margin-top:5px">Only timed steps show a timer in Production.</div>
+      </div>
+    </div>`;
+  }).join("");
+  $$(".imp-step",host).forEach(el=>el.addEventListener("input",e=>importDraft.steps[Number(e.target.dataset.idx)].text=e.target.value));
+  $$(".imp-timed",host).forEach(el=>el.addEventListener("change",e=>{
+    const idx=Number(e.target.dataset.idx), fields=host.querySelector(`[data-timer-fields="${idx}"]`);
+    if(e.target.checked){
+      const guessed=guessTimerMinutes(importDraft.steps[idx].text)||5;
+      importDraft.steps[idx].timerMinutes=Number(importDraft.steps[idx].timerMinutes)||guessed;
+      fields?.classList.remove("hidden");
+      const input=host.querySelector(`.imp-timer-minutes[data-idx="${idx}"]`); if(input) input.value=fmt(importDraft.steps[idx].timerMinutes);
+    }else{
+      importDraft.steps[idx].timerMinutes=null; fields?.classList.add("hidden");
+    }
   }));
-  $$(".imp-step-timer",host).forEach(el=>el.addEventListener("input",e=>{
-    const v=Number(e.target.value); importDraft.steps[Number(e.target.dataset.idx)].timerMinutes=Number.isFinite(v)&&v>0?v:null;
+  $$(".imp-timer-minutes",host).forEach(el=>el.addEventListener("input",e=>{
+    const idx=Number(e.target.dataset.idx), v=Number(e.target.value);
+    importDraft.steps[idx].timerMinutes=Number.isFinite(v)&&v>0?v:null;
   }));
   $$(".remove-step",host).forEach(b=>b.addEventListener("click",()=>{importDraft.steps.splice(Number(b.dataset.idx),1);renderImportReview()}));
 }
@@ -884,7 +989,7 @@ function saveImportedRecipe(){
     id:uid("recipe"),name,category:importDraft.category.trim()||"Recipe",officialVersion:1,
     yield:{text:importDraft.yieldText.trim()||"Yield not set"},
     ingredients:cleanIngredients,
-    steps:importDraft.steps.filter(s=>s.text.trim()).map(s=>({id:s.id||uid("step"),text:s.text.trim(),videoUrl:s.videoUrl||"",timerMinutes:(Number(s.timerMinutes)>0?Number(s.timerMinutes):guessTimerMinutes(s.text))})),
+    steps:importDraft.steps.filter(s=>s.text.trim()).map(s=>({id:s.id||uid("step"),text:s.text.trim(),videoUrl:s.videoUrl||"",timerMinutes:(Number(s.timerMinutes)>0?Number(s.timerMinutes):null)})),
     tests:[]
   };
   state.recipes.push(recipe); selectedRecipeId=recipe.id; saveState(); importDraft=null; toast("Recipe saved"); renderAll(); showView("library");
