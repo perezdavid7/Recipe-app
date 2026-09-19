@@ -1,4 +1,4 @@
-const CACHE_NAME = "recipe-app-v24-forest-refresh";
+const CACHE_NAME = "kitchen-pro-v26-complete";
 const ASSETS = [
   "./",
   "./index.html",
@@ -8,7 +8,9 @@ const ASSETS = [
   "./manifest.webmanifest",
   "./icon-192.png",
   "./icon-512.png",
-  "./apple-touch-icon.png"
+  "./apple-touch-icon.png",
+  "./kitchenpro-logo.png",
+  "./favicon-32.png"
 ];
 
 self.addEventListener("install", event => {

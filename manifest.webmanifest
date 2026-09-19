@@ -1,7 +1,7 @@
 {
-  "name": "Recipe App",
-  "short_name": "Recipe App",
-  "description": "Recipe library, production mode, and recipe lab.",
+  "name": "Kitchen Pro",
+  "short_name": "Kitchen Pro",
+  "description": "Kitchen Pro: recipe library, production mode, and recipe lab.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

@@ -1,6 +1,8 @@
 (() => {
 "use strict";
 
+const BUILD_VERSION = "2.6";
+const BUILD_NAME = "Kitchen Pro Complete";
 const STORAGE_KEY = "recipeApp_forest_v24";
 const VOLUME_FRACTION_UNITS = new Set(["cup","cups","tbsp","tablespoon","tablespoons","tsp","teaspoon","teaspoons"]);
 const UNIT_GROUPS = {
@@ -92,10 +94,22 @@ function showView(view){
   $$(".mode-btn").forEach(b => b.classList.toggle("active", b.dataset.view === view));
   $$(".nav-btn").forEach(b => b.classList.toggle("active", b.dataset.view === view));
   ["library","production","lab","import","data"].forEach(v => $("#view-"+v).classList.toggle("hidden", v !== view));
+
+  // Home keeps the full landing area. Working screens collapse it.
+  document.querySelector(".hero")?.classList.toggle("compact", view !== "library");
+
   renderView(view);
+
+  // Make each menu/icon tap act like true page navigation.
+  requestAnimationFrame(() => {
+    const target = $("#view-" + view);
+    if(!target) return;
+    const top = target.getBoundingClientRect().top + window.scrollY - 12;
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+  });
 }
 function renderAll(){
-  $("#buildTag").textContent = `V${state.appVersion} ${state.buildName || ""}`.trim();
+  $("#buildTag").textContent = `V${BUILD_VERSION} ${BUILD_NAME}`;
   $("#statRecipes").textContent = state.recipes.length;
   $("#statTests").textContent = state.recipes.reduce((sum, r) => sum + (r.tests?.length || 0), 0);
   ["library","production","lab","import","data"].forEach(renderView);
@@ -831,7 +845,7 @@ function importJsonFile(file){
       renderAll();
       toast("JSON imported");
     }catch(e){
-      alert("That is not a valid Recipe App JSON file.");
+      alert("That is not a valid Kitchen Pro JSON file.");
     }
   };
   reader.readAsText(file);
