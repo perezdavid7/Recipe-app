@@ -1,8 +1,8 @@
 (() => {
 "use strict";
 
-const BUILD_VERSION = "2.6";
-const BUILD_NAME = "Kitchen Pro Complete";
+const BUILD_VERSION = "2.6.1";
+const BUILD_NAME = "Kitchen Pro Icon Refresh";
 const STORAGE_KEY = "recipeApp_forest_v24";
 const VOLUME_FRACTION_UNITS = new Set(["cup","cups","tbsp","tablespoon","tablespoons","tsp","teaspoon","teaspoons"]);
 const UNIT_GROUPS = {
@@ -75,7 +75,7 @@ async function init(){
   bindBaseEvents();
   renderAll();
   if("serviceWorker" in navigator){
-    navigator.serviceWorker.register("./sw.js").catch(() => {});
+    navigator.serviceWorker.register("./sw.js", {updateViaCache:"none"}).catch(() => {});
   }
 }
 function bindBaseEvents(){

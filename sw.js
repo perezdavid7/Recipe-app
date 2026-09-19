@@ -1,16 +1,16 @@
-const CACHE_NAME = "kitchen-pro-v26-complete";
+const CACHE_NAME = "kitchen-pro-v261-icon-refresh";
 const ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
   "./recipes.json",
-  "./manifest.webmanifest",
-  "./icon-192.png",
-  "./icon-512.png",
-  "./apple-touch-icon.png",
+  "./kitchenpro-v261.webmanifest",
+  "./kitchenpro-icon-192-v261.png",
+  "./kitchenpro-icon-512-v261.png",
+  "./kitchenpro-apple-touch-v261.png",
   "./kitchenpro-logo.png",
-  "./favicon-32.png"
+  "./kitchenpro-favicon-v261.png"
 ];
 
 self.addEventListener("install", event => {
