@@ -241,3 +241,138 @@ main{margin-top:8px}
 .hero.compact .logo-badge{
   padding:4px;
 }
+
+
+/* Kitchen Pro V2.7 recipe overview */
+.recipe-open-card{
+  cursor:pointer;
+  transition:transform .12s ease,border-color .12s ease,box-shadow .12s ease;
+}
+.recipe-open-card:focus-visible{
+  outline:3px solid rgba(210,154,46,.45);
+  outline-offset:2px;
+}
+@media (hover:hover) and (pointer:fine){
+  .recipe-open-card:hover{
+    transform:translateY(-1px);
+    border-color:#d7c59f;
+    box-shadow:0 12px 28px rgba(31,42,36,.11);
+  }
+}
+.tip-action{
+  width:100%;
+  color:var(--ink);
+  text-align:initial;
+  min-height:unset;
+}
+.overview-toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:14px;
+}
+.overview-hero{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  padding:8px 0 18px;
+  border-bottom:1px solid var(--line);
+}
+.overview-icon{
+  width:116px;
+  height:116px;
+  flex:0 0 116px;
+  border-radius:28px;
+  display:grid;
+  place-items:center;
+  font-size:3.4rem;
+  background:linear-gradient(135deg,#fae7aa,#edc463);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.65);
+}
+.overview-title-block h2{
+  font-size:clamp(1.7rem,5vw,2.5rem);
+  margin:8px 0 6px;
+}
+.overview-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:16px 0;
+}
+.overview-content{
+  margin-top:4px;
+}
+.overview-list{
+  display:grid;
+  gap:8px;
+}
+.overview-row{
+  display:grid;
+  grid-template-columns:minmax(95px,.45fr) 1fr;
+  gap:12px;
+  padding:12px 13px;
+  border:1px solid var(--line);
+  background:white;
+  border-radius:15px;
+}
+.overview-steps{
+  display:grid;
+  gap:10px;
+}
+.overview-step,.edit-step-row{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:10px;
+  align-items:start;
+  padding:12px;
+  border:1px solid var(--line);
+  background:white;
+  border-radius:15px;
+}
+.overview-step{grid-template-columns:auto 1fr}
+.step-bubble{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:#f1eadb;
+  color:var(--forest);
+  display:grid;
+  place-items:center;
+  font-weight:900;
+}
+.recipe-option-list{
+  display:grid;
+  gap:10px;
+  margin-top:10px;
+}
+.recipe-option-list button{
+  width:100%;
+  text-align:left;
+  min-height:52px;
+}
+@media(max-width:560px){
+  .overview-hero{
+    align-items:flex-start;
+  }
+  .overview-icon{
+    width:92px;
+    height:92px;
+    flex-basis:92px;
+    font-size:2.7rem;
+    border-radius:24px;
+  }
+  .overview-actions > button{
+    flex:1 1 150px;
+  }
+  .overview-row{
+    grid-template-columns:95px 1fr;
+  }
+  .edit-step-row{
+    grid-template-columns:auto 1fr;
+  }
+  .edit-step-row .remove-edit-step{
+    grid-column:2;
+    justify-self:start;
+  }
+}

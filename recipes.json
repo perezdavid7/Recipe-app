@@ -1,6 +1,6 @@
 {
-  "appVersion": "2.6.3",
-  "buildName": "iPhone Update Fix",
+  "appVersion": "2.7",
+  "buildName": "Recipe Overview",
   "recipes": [
     {
       "id": "cookie-001",

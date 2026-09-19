@@ -1,8 +1,8 @@
 (() => {
 "use strict";
 
-const BUILD_VERSION = "2.6.3";
-const BUILD_NAME = "iPhone Update Fix";
+const BUILD_VERSION = "2.7";
+const BUILD_NAME = "Recipe Overview";
 const STORAGE_KEY = "recipeApp_forest_v24";
 const VOLUME_FRACTION_UNITS = new Set(["cup","cups","tbsp","tablespoon","tablespoons","tsp","teaspoon","teaspoons"]);
 const UNIT_GROUPS = {
@@ -32,6 +32,9 @@ let selectedRecipeId = null;
 let labDraft = null;
 let importDraft = null;
 let unitPickerTarget = null;
+let libraryScreen = "list";
+let libraryRecipeId = null;
+let editDraft = null;
 
 const $ = (s, root=document) => root.querySelector(s);
 const $$ = (s, root=document) => [...root.querySelectorAll(s)];
@@ -176,7 +179,7 @@ async function init(){
   bindBaseEvents();
   renderAll();
   if("serviceWorker" in navigator){
-    navigator.serviceWorker.register("./sw.js?v=263", {updateViaCache:"none"}).then(reg => reg.update()).catch(() => {});
+    navigator.serviceWorker.register("./sw.js?v=270", {updateViaCache:"none"}).then(reg => reg.update()).catch(() => {});
   }
 }
 function bindBaseEvents(){
@@ -231,25 +234,35 @@ function recipeSelect(id){
 function scaledAmount(amount, scale){ return Math.round(Number(amount) * Number(scale) * 1000) / 1000; }
 
 function renderLibrary(){
+  if(libraryScreen === "detail" && libraryRecipeId){
+    renderRecipeOverview(libraryRecipeId);
+    return;
+  }
+  if(libraryScreen === "edit" && editDraft){
+    renderRecipeEditor();
+    return;
+  }
+
   const host = $("#view-library");
   if(!state.recipes.length){
     host.innerHTML = `<div class="card"><div class="empty">No recipes yet. Start by importing one.</div><div style="margin-top:12px"><button class="primary" id="goImportEmpty">Import Recipe</button></div></div>`;
     $("#goImportEmpty")?.addEventListener("click", ()=>showView("import"));
     return;
   }
+
   host.innerHTML = `
     <div class="card">
       <div class="section-head">
         <div>
           <h2>My Recipes</h2>
-          <div class="subtle">Official recipes your team can trust.</div>
+          <div class="subtle">Tap any recipe card to open the full recipe.</div>
         </div>
-        <span class="badge">🌿 Forest Refresh</span>
+        <span class="badge">Kitchen Pro</span>
       </div>
 
       <div class="recipe-list">
         ${state.recipes.map(r => `
-          <article class="recipe-card">
+          <article class="recipe-card recipe-open-card" data-id="${esc(r.id)}" tabindex="0" role="button" aria-label="Open ${esc(r.name)}">
             <div class="thumb">${esc(r.icon || "🍽️")}</div>
             <div>
               <div class="recipe-title">${esc(r.name)}</div>
@@ -260,8 +273,9 @@ function renderLibrary(){
               </div>
             </div>
             <div class="recipe-actions">
-              <button class="icon-btn open-prod" data-id="${esc(r.id)}" title="Production">👨‍🍳</button>
-              <button class="icon-btn open-lab" data-id="${esc(r.id)}" title="Recipe Lab">🧪</button>
+              <button class="icon-btn open-prod" data-id="${esc(r.id)}" title="Start Production" aria-label="Start Production for ${esc(r.name)}">👨‍🍳</button>
+              <button class="icon-btn open-lab" data-id="${esc(r.id)}" title="Open Recipe Lab" aria-label="Open Recipe Lab for ${esc(r.name)}">🧪</button>
+              <button class="icon-btn recipe-menu-btn" data-id="${esc(r.id)}" title="Recipe options" aria-label="Options for ${esc(r.name)}">⋯</button>
             </div>
           </article>
         `).join("")}
@@ -269,21 +283,382 @@ function renderLibrary(){
 
       <button class="cta-wide" id="libraryImportBtn">＋ Add New Recipe</button>
 
-      <div class="tip-card">
+      <button class="tip-card tip-action" id="betterRecipesTip" type="button">
         <div class="tip-left">
-          <div class="tip-icon">👨‍🍳</div>
-          <div>
+          <div class="tip-icon">🧪</div>
+          <div style="text-align:left">
             <div style="font-weight:900">Better recipes.</div>
             <div class="subtle">A brighter kitchen.</div>
           </div>
         </div>
         <div>›</div>
+      </button>
+    </div>
+  `;
+
+  $("#libraryImportBtn").addEventListener("click", ()=>showView("import"));
+  $("#betterRecipesTip").addEventListener("click", ()=>{
+    const first = state.recipes[0];
+    if(first) selectedRecipeId = first.id;
+    labDraft = null;
+    showView("lab");
+  });
+
+  $$(".recipe-open-card", host).forEach(card => {
+    const open = () => openRecipeOverview(card.dataset.id);
+    card.addEventListener("click", e => {
+      if(e.target.closest("button")) return;
+      open();
+    });
+    card.addEventListener("keydown", e => {
+      if((e.key === "Enter" || e.key === " ") && !e.target.closest("button")){
+        e.preventDefault();
+        open();
+      }
+    });
+  });
+
+  $$(".open-prod", host).forEach(btn => btn.addEventListener("click", e => {
+    e.stopPropagation();
+    selectedRecipeId = btn.dataset.id;
+    showView("production");
+  }));
+  $$(".open-lab", host).forEach(btn => btn.addEventListener("click", e => {
+    e.stopPropagation();
+    selectedRecipeId = btn.dataset.id;
+    labDraft = null;
+    showView("lab");
+  }));
+  $$(".recipe-menu-btn", host).forEach(btn => btn.addEventListener("click", e => {
+    e.stopPropagation();
+    openRecipeMenu(btn.dataset.id);
+  }));
+}
+
+function openRecipeOverview(id){
+  libraryRecipeId = id;
+  selectedRecipeId = id;
+  libraryScreen = "detail";
+  renderLibrary();
+  requestAnimationFrame(() => {
+    const target = $("#view-library");
+    if(target) window.scrollTo({top:Math.max(0,target.getBoundingClientRect().top + window.scrollY - 8),behavior:"smooth"});
+  });
+}
+
+function renderRecipeOverview(id){
+  const host = $("#view-library");
+  const r = state.recipes.find(x => x.id === id);
+  if(!r){
+    libraryScreen = "list";
+    libraryRecipeId = null;
+    renderLibrary();
+    return;
+  }
+
+  host.innerHTML = `
+    <div class="card recipe-overview">
+      <div class="overview-toolbar">
+        <button class="ghost small" id="backToLibrary">← My Recipes</button>
+        <button class="ghost small" id="overviewMenu">⋯ Options</button>
+      </div>
+
+      <div class="overview-hero">
+        <div class="overview-icon">${esc(r.icon || "🍽️")}</div>
+        <div class="overview-title-block">
+          <span class="badge">${esc(r.category || "Recipe")}</span>
+          <h2>${esc(r.name)}</h2>
+          <div class="subtle">${esc(r.yield?.text || "Yield not set")} · Official v${esc(r.officialVersion)}</div>
+        </div>
+      </div>
+
+      <div class="overview-actions">
+        <button class="primary" id="overviewProduction">👨‍🍳 Start Production</button>
+        <button class="good" id="overviewLab">🧪 Recipe Lab</button>
+      </div>
+
+      <div class="grid two overview-content">
+        <div>
+          <div class="section-head"><div><h3>Ingredients</h3><div class="subtle">${r.ingredients.length} ingredients</div></div></div>
+          <div class="overview-list">
+            ${r.ingredients.map(i => `
+              <div class="overview-row">
+                <strong>${fmt(i.amount)} ${esc(i.unit)}</strong>
+                <span>${esc(i.name)}</span>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+        <div>
+          <div class="section-head"><div><h3>Process</h3><div class="subtle">${r.steps.length} steps</div></div></div>
+          <div class="overview-steps">
+            ${r.steps.map((s,idx) => `
+              <div class="overview-step">
+                <div class="step-bubble">${idx+1}</div>
+                <div>${esc(s.text)}</div>
+              </div>
+            `).join("") || `<div class="empty">No process steps saved yet.</div>`}
+          </div>
+        </div>
       </div>
     </div>
   `;
-  $(".cta-wide", host).addEventListener("click", ()=>showView("import"));
-  $$(".open-prod", host).forEach(btn => btn.addEventListener("click", () => { selectedRecipeId = btn.dataset.id; showView("production"); }));
-  $$(".open-lab", host).forEach(btn => btn.addEventListener("click", () => { selectedRecipeId = btn.dataset.id; labDraft = null; showView("lab"); }));
+
+  $("#backToLibrary").addEventListener("click", ()=>{
+    libraryScreen = "list";
+    libraryRecipeId = null;
+    editDraft = null;
+    renderLibrary();
+  });
+  $("#overviewMenu").addEventListener("click", ()=>openRecipeMenu(r.id));
+  $("#overviewProduction").addEventListener("click", ()=>{
+    selectedRecipeId = r.id;
+    showView("production");
+  });
+  $("#overviewLab").addEventListener("click", ()=>{
+    selectedRecipeId = r.id;
+    labDraft = null;
+    showView("lab");
+  });
+}
+
+function openRecipeMenu(id){
+  const r = state.recipes.find(x => x.id === id);
+  if(!r) return;
+  $("#sheetHost").innerHTML = `
+    <div class="sheet-backdrop" id="recipeMenuBackdrop">
+      <div class="sheet">
+        <div class="sheet-head">
+          <div><strong>${esc(r.name)}</strong><div class="small">Recipe options</div></div>
+          <button class="ghost small" id="closeRecipeMenu">Close</button>
+        </div>
+        <div class="recipe-option-list">
+          <button type="button" id="menuEditRecipe">✏️ Edit Recipe</button>
+          <button type="button" id="menuDuplicateRecipe">⧉ Duplicate Recipe</button>
+          <button type="button" class="danger" id="menuDeleteRecipe">🗑️ Delete Recipe</button>
+        </div>
+      </div>
+    </div>
+  `;
+  $("#closeRecipeMenu").addEventListener("click", closeRecipeMenu);
+  $("#recipeMenuBackdrop").addEventListener("click", e => {
+    if(e.target.id === "recipeMenuBackdrop") closeRecipeMenu();
+  });
+  $("#menuEditRecipe").addEventListener("click", ()=>{
+    closeRecipeMenu();
+    startRecipeEdit(id);
+  });
+  $("#menuDuplicateRecipe").addEventListener("click", ()=>{
+    closeRecipeMenu();
+    duplicateRecipe(id);
+  });
+  $("#menuDeleteRecipe").addEventListener("click", ()=>{
+    closeRecipeMenu();
+    deleteRecipe(id);
+  });
+}
+
+function closeRecipeMenu(){
+  $("#sheetHost").innerHTML = "";
+}
+
+function duplicateRecipe(id){
+  const source = state.recipes.find(r => r.id === id);
+  if(!source) return;
+  const copy = clone(source);
+  copy.id = uid("recipe");
+  copy.name = `${source.name} Copy`;
+  copy.officialVersion = 1;
+  copy.tests = [];
+  copy.ingredients = copy.ingredients.map(i => ({...i,id:uid("ing")}));
+  copy.steps = copy.steps.map(s => ({...s,id:uid("step")}));
+  state.recipes.push(copy);
+  saveState();
+  libraryScreen = "list";
+  libraryRecipeId = null;
+  renderAll();
+  toast("Recipe duplicated");
+}
+
+function deleteRecipe(id){
+  const r = state.recipes.find(x => x.id === id);
+  if(!r) return;
+  const tests = r.tests?.length || 0;
+  const extra = tests ? ` This also removes ${tests} saved test${tests===1?"":"s"} on this device.` : "";
+  if(!confirm(`Delete "${r.name}"?${extra}\n\nThis cannot be undone unless you restore a JSON backup.`)) return;
+
+  state.recipes = state.recipes.filter(x => x.id !== id);
+  if(selectedRecipeId === id) selectedRecipeId = state.recipes[0]?.id || null;
+  libraryScreen = "list";
+  libraryRecipeId = null;
+  editDraft = null;
+  saveState();
+  renderAll();
+  toast("Recipe deleted");
+}
+
+function startRecipeEdit(id){
+  const r = state.recipes.find(x => x.id === id);
+  if(!r) return;
+  editDraft = clone(r);
+  editDraft.yieldText = r.yield?.text || "";
+  libraryRecipeId = id;
+  libraryScreen = "edit";
+  renderLibrary();
+  requestAnimationFrame(() => {
+    const target = $("#view-library");
+    if(target) window.scrollTo({top:Math.max(0,target.getBoundingClientRect().top + window.scrollY - 8),behavior:"smooth"});
+  });
+}
+
+function renderRecipeEditor(){
+  const host = $("#view-library");
+  if(!editDraft){
+    libraryScreen = "list";
+    renderLibrary();
+    return;
+  }
+  host.innerHTML = `
+    <div class="card">
+      <div class="section-head">
+        <div><h2>Edit Recipe</h2><div class="subtle">Changes update the official recipe and create a new version number.</div></div>
+        <button class="ghost small" id="cancelRecipeEdit">Cancel</button>
+      </div>
+
+      <div class="grid two">
+        <div class="field"><label>Recipe name</label><input id="editName" value="${esc(editDraft.name)}"></div>
+        <div class="field"><label>Category</label><input id="editCategory" value="${esc(editDraft.category || "")}"></div>
+      </div>
+      <div class="field"><label>Yield / batch size</label><input id="editYield" value="${esc(editDraft.yieldText || "")}"></div>
+
+      <div class="section-head">
+        <div><h3>Ingredients</h3></div>
+        <button class="small" id="addEditIngredient">+ Ingredient</button>
+      </div>
+      <div id="editIngredients"></div>
+
+      <div class="section-head" style="margin-top:12px">
+        <div><h3>Process</h3></div>
+        <button class="small" id="addEditStep">+ Step</button>
+      </div>
+      <div id="editSteps"></div>
+
+      <div class="overview-actions" style="margin-top:16px">
+        <button class="primary" id="saveRecipeEdit">Save Changes</button>
+        <button class="ghost" id="cancelRecipeEditBottom">Cancel</button>
+      </div>
+    </div>
+  `;
+
+  $("#editName").addEventListener("input",e=>editDraft.name=e.target.value);
+  $("#editCategory").addEventListener("input",e=>editDraft.category=e.target.value);
+  $("#editYield").addEventListener("input",e=>editDraft.yieldText=e.target.value);
+  $("#addEditIngredient").addEventListener("click",()=>{
+    editDraft.ingredients.push({id:uid("ing"),amount:null,unit:"",name:""});
+    renderRecipeEditor();
+  });
+  $("#addEditStep").addEventListener("click",()=>{
+    editDraft.steps.push({id:uid("step"),text:"",videoUrl:""});
+    renderRecipeEditor();
+  });
+  $("#saveRecipeEdit").addEventListener("click",saveRecipeEdit);
+  $("#cancelRecipeEdit").addEventListener("click",cancelRecipeEdit);
+  $("#cancelRecipeEditBottom").addEventListener("click",cancelRecipeEdit);
+
+  renderEditIngredients();
+  renderEditSteps();
+}
+
+function renderEditIngredients(){
+  const host = $("#editIngredients");
+  if(!editDraft.ingredients.length){
+    host.innerHTML = `<div class="empty">No ingredients. Add one above.</div>`;
+    return;
+  }
+  host.innerHTML = editDraft.ingredients.map((i,idx)=>`
+    <div class="ingredient-row">
+      <div class="namecell">
+        <label>Ingredient</label>
+        <input class="edit-ing-name" data-idx="${idx}" value="${esc(i.name)}">
+        <button class="ghost small remove-edit-ing" data-idx="${idx}" style="margin-top:7px">Remove</button>
+      </div>
+      <div><label>Amount</label>${renderAmountControls("edit",i,idx)}</div>
+      <div><label>Unit</label><button type="button" class="unit-btn" data-context="edit" data-idx="${idx}">${esc(i.unit || "Select")}</button></div>
+    </div>
+  `).join("");
+  bindIngredientEditors("edit",host);
+  $$(".edit-ing-name",host).forEach(el=>el.addEventListener("input",e=>{
+    editDraft.ingredients[Number(e.target.dataset.idx)].name=e.target.value;
+  }));
+  $$(".remove-edit-ing",host).forEach(btn=>btn.addEventListener("click",()=>{
+    editDraft.ingredients.splice(Number(btn.dataset.idx),1);
+    renderRecipeEditor();
+  }));
+}
+
+function renderEditSteps(){
+  const host = $("#editSteps");
+  if(!editDraft.steps.length){
+    host.innerHTML = `<div class="empty">No process steps. Add one above.</div>`;
+    return;
+  }
+  host.innerHTML = editDraft.steps.map((s,idx)=>`
+    <div class="edit-step-row">
+      <div class="step-bubble">${idx+1}</div>
+      <textarea class="edit-step-text" data-idx="${idx}">${esc(s.text)}</textarea>
+      <button class="ghost small remove-edit-step" data-idx="${idx}">Remove</button>
+    </div>
+  `).join("");
+  $$(".edit-step-text",host).forEach(el=>el.addEventListener("input",e=>{
+    editDraft.steps[Number(e.target.dataset.idx)].text=e.target.value;
+  }));
+  $$(".remove-edit-step",host).forEach(btn=>btn.addEventListener("click",()=>{
+    editDraft.steps.splice(Number(btn.dataset.idx),1);
+    renderRecipeEditor();
+  }));
+}
+
+function cancelRecipeEdit(){
+  const id = libraryRecipeId;
+  editDraft = null;
+  libraryScreen = id ? "detail" : "list";
+  renderLibrary();
+}
+
+function saveRecipeEdit(){
+  const name = editDraft.name.trim();
+  if(!name){ toast("Recipe name is required"); return; }
+  const ingredients = editDraft.ingredients.filter(i=>String(i.name||"").trim()).map(i=>({
+    id:i.id || uid("ing"),
+    name:String(i.name).trim(),
+    amount:Number(i.amount || 0),
+    unit:i.unit || "each"
+  }));
+  if(!ingredients.length){ toast("Add at least one ingredient"); return; }
+
+  const idx = state.recipes.findIndex(r=>r.id===editDraft.id);
+  if(idx<0) return;
+  const existing = state.recipes[idx];
+  const updated = {
+    ...existing,
+    name,
+    category:String(editDraft.category || "").trim() || "Recipe",
+    yield:{...(existing.yield||{}),text:String(editDraft.yieldText||"").trim() || "Yield not set"},
+    ingredients,
+    steps:editDraft.steps.filter(s=>String(s.text||"").trim()).map(s=>({
+      id:s.id || uid("step"),
+      text:String(s.text).trim(),
+      videoUrl:s.videoUrl || ""
+    })),
+    officialVersion:Number(existing.officialVersion || 0)+1
+  };
+  state.recipes[idx]=updated;
+  saveState();
+  editDraft=null;
+  libraryRecipeId=updated.id;
+  libraryScreen="detail";
+  renderAll();
+  toast(`Saved as official v${updated.officialVersion}`);
 }
 
 function renderProduction(){
@@ -539,19 +914,24 @@ function renderLabIngredients(){
   }).join("");
   bindIngredientEditors("lab", host);
 }
+function ingredientTarget(context){
+  if(context === "lab") return labDraft.ingredients;
+  if(context === "edit") return editDraft.ingredients;
+  return importDraft.ingredients;
+}
 function bindIngredientEditors(context, host){
   $$(".amount-input", host).forEach(el => el.addEventListener("input", e => {
     const idx = Number(e.target.dataset.idx);
-    const target = context === "lab" ? labDraft.ingredients : importDraft.ingredients;
-    target[idx].amount = num(e.target.value);
+    ingredientTarget(context)[idx].amount = num(e.target.value);
   }));
   $$(".frac-btn", host).forEach(btn => btn.addEventListener("click", () => {
     const idx = Number(btn.dataset.idx);
     const frac = Number(btn.dataset.frac);
-    const target = context === "lab" ? labDraft.ingredients : importDraft.ingredients;
+    const target = ingredientTarget(context);
     const current = Number(target[idx].amount || 0);
     target[idx].amount = Math.floor(Math.max(0, current)) + frac;
     if(context === "lab") renderLabIngredients();
+    else if(context === "edit") renderRecipeEditor();
     else renderImportReview();
   }));
   $$(".unit-btn", host).forEach(btn => btn.addEventListener("click", () => openUnitPicker(context, Number(btn.dataset.idx))));
@@ -590,10 +970,11 @@ function closeUnitPicker(){
 }
 function setPickedUnit(unit){
   const {context, idx} = unitPickerTarget;
-  const target = context === "lab" ? labDraft.ingredients : importDraft.ingredients;
+  const target = ingredientTarget(context);
   target[idx].unit = unit;
   closeUnitPicker();
   if(context === "lab") renderLabIngredients();
+  else if(context === "edit") renderRecipeEditor();
   else renderImportReview();
 }
 function saveLabTest(){

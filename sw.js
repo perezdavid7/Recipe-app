@@ -1,9 +1,9 @@
-const CACHE_NAME = "kitchen-pro-v263-iphone-update-fix";
+const CACHE_NAME = "kitchen-pro-v270-recipe-overview";
 const CORE = [
   "./",
   "./index.html",
-  "./styles.css?v=263",
-  "./app.js?v=263",
+  "./styles.css?v=270",
+  "./app.js?v=270",
   "./recipes.json",
   "./kitchenpro-v261.webmanifest",
   "./kitchenpro-logo.png",
