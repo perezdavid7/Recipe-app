@@ -1,4 +1,4 @@
-const CACHE_NAME = "kitchen-pro-v261-icon-refresh";
+const CACHE_NAME = "kitchen-pro-v262-data-recovery";
 const ASSETS = [
   "./",
   "./index.html",

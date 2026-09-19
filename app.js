@@ -1,8 +1,8 @@
 (() => {
 "use strict";
 
-const BUILD_VERSION = "2.6.1";
-const BUILD_NAME = "Kitchen Pro Icon Refresh";
+const BUILD_VERSION = "2.6.2";
+const BUILD_NAME = "Kitchen Pro Data Recovery";
 const STORAGE_KEY = "recipeApp_forest_v24";
 const VOLUME_FRACTION_UNITS = new Set(["cup","cups","tbsp","tablespoon","tablespoons","tsp","teaspoon","teaspoons"]);
 const UNIT_GROUPS = {
@@ -52,9 +52,110 @@ function toast(msg){
   setTimeout(() => el.classList.remove("show"), 1900);
 }
 function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+const LEGACY_STORAGE_KEYS = [
+  "recipeAppV2_state",
+  "recipeApp_forest_v24",
+  "kitchenPro_v25_state",
+  "kitchenPro_v25",
+  "recipeLabTestMode_v1"
+];
+
+function parseStoredState(key){
+  try{
+    const raw = localStorage.getItem(key);
+    if(!raw) return null;
+    const parsed = JSON.parse(raw);
+
+    // Recipe Lab V1 stored a single recipe object instead of a recipes array.
+    if(parsed?.recipe && !parsed?.recipes){
+      return {
+        appVersion: "legacy",
+        buildName: "Recovered Recipe Lab",
+        recipes: [parsed.recipe]
+      };
+    }
+    return Array.isArray(parsed?.recipes) ? parsed : null;
+  }catch(e){
+    return null;
+  }
+}
+
+function mergeRecoveredStates(states){
+  const merged = {appVersion: BUILD_VERSION, buildName: BUILD_NAME, recipes: []};
+  const byId = new Map();
+
+  for(const snapshot of states){
+    for(const incoming of (snapshot?.recipes || [])){
+      if(!incoming || !incoming.name) continue;
+      const recipe = JSON.parse(JSON.stringify(incoming));
+      const key = recipe.id || `name:${recipe.name.trim().toLowerCase()}`;
+
+      if(!byId.has(key)){
+        byId.set(key, recipe);
+        continue;
+      }
+
+      const existing = byId.get(key);
+      const existingTests = existing.tests?.length || 0;
+      const incomingTests = recipe.tests?.length || 0;
+
+      // Prefer the copy with more development history. If tied, prefer the
+      // higher official version. Preserve any missing tests from both.
+      const existingVersion = Number(existing.officialVersion || 0);
+      const incomingVersion = Number(recipe.officialVersion || 0);
+      const preferred = (incomingTests > existingTests ||
+        (incomingTests === existingTests && incomingVersion > existingVersion))
+        ? recipe : existing;
+      const secondary = preferred === recipe ? existing : recipe;
+
+      const seenTests = new Set((preferred.tests || []).map(t => t.id || `${t.createdAt}|${t.number}|${t.title}`));
+      preferred.tests ||= [];
+      for(const t of (secondary.tests || [])){
+        const tk = t.id || `${t.createdAt}|${t.number}|${t.title}`;
+        if(!seenTests.has(tk)){
+          preferred.tests.push(t);
+          seenTests.add(tk);
+        }
+      }
+      byId.set(key, preferred);
+    }
+  }
+
+  merged.recipes = [...byId.values()];
+  return merged;
+}
+
 function loadStored(){
-  try{ const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : null; }
-  catch(e){ return null; }
+  const snapshots = [];
+  const keysSeen = new Set();
+
+  // Current key first, then every known legacy key from earlier Kitchen Pro /
+  // Recipe App builds. We intentionally DO NOT delete any old key.
+  for(const key of [STORAGE_KEY, ...LEGACY_STORAGE_KEYS]){
+    if(keysSeen.has(key)) continue;
+    keysSeen.add(key);
+    const parsed = parseStoredState(key);
+    if(parsed?.recipes?.length) snapshots.push({key, data:parsed});
+  }
+
+  if(!snapshots.length) return null;
+
+  const merged = mergeRecoveredStates(snapshots.map(s => s.data));
+  const current = parseStoredState(STORAGE_KEY);
+  const currentCount = current?.recipes?.length || 0;
+  const recoveredCount = Math.max(0, merged.recipes.length - currentCount);
+
+  // Save the merged recovery result under the current key, while retaining
+  // every legacy key as an untouched fallback.
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+
+  if(recoveredCount > 0){
+    setTimeout(() => {
+      toast(`Recovered ${recoveredCount} recipe${recoveredCount===1?"":"s"} from an older build`);
+    }, 500);
+  }
+  return merged;
 }
 async function loadSeed(){
   const resp = await fetch("recipes.json", {cache:"no-store"});
