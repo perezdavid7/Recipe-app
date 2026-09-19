@@ -1,30 +1,27 @@
-Kitchen Pro V2.6.2 — DATA RECOVERY PATCH
+Kitchen Pro V2.6.3 — iPhone Update Fix
+
+PURPOSE
+This build fixes the installed iPhone Home Screen web app getting stuck on an older cached build.
 
 IMPORTANT
-This patch is designed to recover recipe libraries that became invisible after
-earlier builds changed the browser local-storage key.
+- It does NOT change or clear the recipe storage key.
+- It keeps the V2.6.2 legacy-data recovery logic.
+- It does NOT delete localStorage.
+- Do not delete the existing iPhone Home Screen app before trying this build.
 
-It checks these older storage locations automatically:
-- recipeAppV2_state
-- recipeApp_forest_v24
-- kitchenPro_v25_state
-- kitchenPro_v25
-- recipeLabTestMode_v1
+WHAT CHANGED
+- The service-worker URL is versioned so iOS must request the new worker.
+- App HTML, CSS, and JavaScript use cache-busting version parameters.
+- Navigation/app code is now network-first with cache fallback.
+- Static icon/image files remain cache-first.
+- Old service-worker caches are removed during activation.
 
-It merges recovered recipes into the current Kitchen Pro library and DOES NOT
-delete the legacy storage keys.
+AFTER UPLOADING
+1. Wait for GitHub Pages to finish deploying.
+2. On the iPhone, open the Kitchen Pro URL in Safari and verify V2.6.3.
+3. Close Safari.
+4. Force-close the existing Home Screen Kitchen Pro app.
+5. Reopen the same Home Screen app.
+6. If needed, close/reopen it once more so the new service worker can take control.
 
-BEFORE UPDATING YOUR DAUGHTER'S IPHONE
-Do not clear Safari website data, browser storage, or app/site data. Those old
-browser records are what this recovery patch will try to read.
-
-UPLOAD
-Upload/replace all files from this package in the GitHub repository and commit
-to main. Wait for GitHub Pages to redeploy.
-
-RECOVERY
-Then have your daughter open the exact same Kitchen Pro GitHub Pages address
-she used before and refresh it. If the old local data is still present under
-that origin, Kitchen Pro will recover and merge it automatically.
-
-After the recipes reappear, immediately use Data > Export JSON to make a backup.
+Do not clear Safari website data while recovering recipes.

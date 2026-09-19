@@ -1,8 +1,8 @@
 (() => {
 "use strict";
 
-const BUILD_VERSION = "2.6.2";
-const BUILD_NAME = "Kitchen Pro Data Recovery";
+const BUILD_VERSION = "2.6.3";
+const BUILD_NAME = "iPhone Update Fix";
 const STORAGE_KEY = "recipeApp_forest_v24";
 const VOLUME_FRACTION_UNITS = new Set(["cup","cups","tbsp","tablespoon","tablespoons","tsp","teaspoon","teaspoons"]);
 const UNIT_GROUPS = {
@@ -176,7 +176,7 @@ async function init(){
   bindBaseEvents();
   renderAll();
   if("serviceWorker" in navigator){
-    navigator.serviceWorker.register("./sw.js", {updateViaCache:"none"}).catch(() => {});
+    navigator.serviceWorker.register("./sw.js?v=263", {updateViaCache:"none"}).then(reg => reg.update()).catch(() => {});
   }
 }
 function bindBaseEvents(){
