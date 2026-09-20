@@ -1,70 +1,54 @@
-const CACHE_NAME = "kitchen-pro-v270-recipe-overview";
+const CACHE_NAME = "kitchen-pro-v280";
 const CORE = [
   "./",
   "./index.html",
-  "./styles.css?v=270",
-  "./app.js?v=270",
-  "./recipes.json",
-  "./kitchenpro-v261.webmanifest",
+  "./styles.css?v=280",
+  "./app.js?v=280",
+  "./kitchenpro-v28.webmanifest",
+  "./apple-touch-icon.png",
+  "./favicon-32.png",
+  "./icon-192.png",
+  "./icon-512.png",
   "./kitchenpro-logo.png",
-  "./kitchenpro-icon-192-v261.png",
-  "./kitchenpro-icon-512-v261.png",
-  "./kitchenpro-apple-touch-v261.png",
-  "./kitchenpro-favicon-v261.png"
+  "./recipes.json"
 ];
 
 self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(CORE))
-      .then(() => self.skipWaiting())
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await Promise.allSettled(CORE.map(url => cache.add(url)));
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys()
-      .then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))))
-      .then(() => self.clients.claim())
-  );
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter(k => k !== CACHE_NAME && k.startsWith("kitchen-pro-")).map(k => caches.delete(k)));
+    await self.clients.claim();
+  })());
 });
 
-async function networkFirst(request) {
-  try {
-    const fresh = await fetch(request, { cache: "no-store" });
-    const cache = await caches.open(CACHE_NAME);
-    cache.put(request, fresh.clone());
-    return fresh;
-  } catch (err) {
-    const cached = await caches.match(request);
-    if (cached) return cached;
-    throw err;
-  }
-}
-
-async function cacheFirst(request) {
-  const cached = await caches.match(request);
-  if (cached) return cached;
-  const fresh = await fetch(request);
-  const cache = await caches.open(CACHE_NAME);
-  cache.put(request, fresh.clone());
-  return fresh;
-}
-
 self.addEventListener("fetch", event => {
-  if (event.request.method !== "GET") return;
-
+  if(event.request.method !== "GET") return;
   const url = new URL(event.request.url);
-  const isNavigation = event.request.mode === "navigate";
-  const isAppCode =
-    url.pathname.endsWith("/app.js") ||
-    url.pathname.endsWith("/styles.css") ||
-    url.pathname.endsWith("/index.html") ||
-    url.pathname.endsWith("/recipes.json");
+  if(url.origin !== self.location.origin) return;
 
-  if (isNavigation || isAppCode) {
-    event.respondWith(networkFirst(event.request));
-  } else {
-    event.respondWith(cacheFirst(event.request));
-  }
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    try{
+      const response = await fetch(event.request, {cache:"no-store"});
+      if(response && response.ok) cache.put(event.request, response.clone()).catch(()=>{});
+      return response;
+    }catch(err){
+      const cached = await cache.match(event.request, {ignoreSearch:false}) ||
+                     await cache.match(url.pathname.endsWith("/") ? "./index.html" : event.request, {ignoreSearch:true});
+      if(cached) return cached;
+      if(event.request.mode === "navigate"){
+        const fallback = await cache.match("./index.html");
+        if(fallback) return fallback;
+      }
+      throw err;
+    }
+  })());
 });

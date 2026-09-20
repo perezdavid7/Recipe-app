@@ -1,225 +1,2181 @@
 {
-  "appVersion": "2.7",
-  "buildName": "Recipe Overview",
+  "appVersion": "2.8",
+  "databaseName": "El Mexican Restaurant - Recipe App Test Database",
+  "databaseVersion": "2.8",
+  "createdAt": "2026-09-19",
+  "source": "Transcribed from the recipe binder photos provided by the user. Recipe titles are primary identifiers; printed page numbers are reference-only because some are missing or incorrect.",
   "recipes": [
     {
-      "id": "cookie-001",
-      "name": "Chocolate Chip Cookies",
-      "category": "Bakery",
-      "icon": "\ud83c\udf6a",
-      "yield": {
-        "text": "24 cookies"
-      },
+      "id": "salsa-verde-001",
+      "name": "Salsa Verde",
+      "category": "Salsas",
       "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
       "ingredients": [
         {
-          "id": "flour",
-          "amount": 270,
-          "unit": "g",
-          "name": "All-purpose flour"
+          "id": "tomatillo",
+          "amount": 25.4,
+          "unit": "lb",
+          "name": "Tomatillo"
         },
         {
-          "id": "butter",
-          "amount": 170,
-          "unit": "g",
-          "name": "Unsalted butter"
+          "id": "chile-jalapeno",
+          "amount": 15.0,
+          "unit": "each",
+          "name": "Chile jalapeño"
         },
         {
-          "id": "brown-sugar",
-          "amount": 150,
-          "unit": "g",
-          "name": "Brown sugar"
+          "id": "agua",
+          "amount": 1.0,
+          "unit": "gal",
+          "name": "Agua"
         },
         {
-          "id": "white-sugar",
-          "amount": 100,
-          "unit": "g",
-          "name": "White sugar"
+          "id": "ajo",
+          "amount": 3.0,
+          "unit": "puño",
+          "name": "Ajo"
         },
         {
-          "id": "eggs",
-          "amount": 2,
-          "unit": "egg",
-          "name": "Large eggs"
+          "id": "aceite-vegetal",
+          "amount": 24.0,
+          "unit": "oz",
+          "name": "Aceite vegetal"
         },
         {
-          "id": "vanilla",
-          "amount": 10,
-          "unit": "mL",
-          "name": "Vanilla extract"
+          "id": "cebolla",
+          "amount": 2.0,
+          "unit": "puño",
+          "name": "Cebolla"
         },
         {
-          "id": "baking-soda",
-          "amount": 5,
-          "unit": "g",
-          "name": "Baking soda"
+          "id": "sazonador-knorr-de-pollo",
+          "amount": 2.75,
+          "unit": "cup",
+          "name": "Sazonador Knorr de pollo"
         },
         {
-          "id": "salt",
-          "amount": 4,
-          "unit": "g",
-          "name": "Salt"
-        },
-        {
-          "id": "chips",
-          "amount": 250,
-          "unit": "g",
-          "name": "Chocolate chips"
-        }
-      ],
-      "steps": [
-        {
-          "id": "s1",
-          "text": "Preheat the oven to 350\u00b0F (175\u00b0C).",
-          "videoUrl": ""
-        },
-        {
-          "id": "s2",
-          "text": "Cream the butter, brown sugar, and white sugar until smooth.",
-          "videoUrl": ""
-        },
-        {
-          "id": "s3",
-          "text": "Mix in the eggs and vanilla.",
-          "videoUrl": ""
-        },
-        {
-          "id": "s4",
-          "text": "Combine the flour, baking soda, and salt, then mix into the wet ingredients.",
-          "videoUrl": ""
-        },
-        {
-          "id": "s5",
-          "text": "Fold in the chocolate chips.",
-          "videoUrl": ""
-        },
-        {
-          "id": "s6",
-          "text": "Portion the dough and bake until the edges are set and the centers stay slightly soft.",
-          "videoUrl": ""
-        }
-      ],
-      "tests": []
-    },
-    {
-      "id": "salsa-001",
-      "name": "Salsa Roja",
-      "category": "Sauce",
-      "icon": "\ud83c\udf36\ufe0f",
-      "yield": {
-        "text": "3 cups"
-      },
-      "officialVersion": 1,
-      "ingredients": [
-        {
-          "id": "tomatoes",
-          "amount": 680,
-          "unit": "g",
-          "name": "Roasted tomatoes"
-        },
-        {
-          "id": "onion",
-          "amount": 120,
-          "unit": "g",
-          "name": "White onion"
-        },
-        {
-          "id": "garlic",
-          "amount": 4,
-          "unit": "clove",
-          "name": "Garlic cloves"
+          "id": "comino",
+          "amount": 2.0,
+          "unit": "tbsp",
+          "name": "Comino"
         },
         {
           "id": "cilantro",
-          "amount": 20,
-          "unit": "g",
+          "amount": 3.0,
+          "unit": "bunch",
+          "name": "Cilantro"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Hervir el tomatillo y los jalapeños en el galón de agua.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Cocinar el ajo con el aceite vegetal a fuego medio durante 5 minutos.",
+          "videoUrl": "",
+          "timerMinutes": 5.0,
+          "timedStep": true
+        },
+        {
+          "id": "s3",
+          "text": "Agregar la cebolla y seguir cocinando hasta que esté doradita.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s4",
+          "text": "Esperar a que se enfríe y agregar al tomatillo y jalapeño hervido.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s5",
+          "text": "Agregar el Knorr y el comino al moler todo junto.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s6",
+          "text": "Cuando esté fría, moler el cilantro con una jarra de la salsa.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "Las notas manuscritas cambian el ajo a 3 puños y el cilantro a 3 manojos; se usaron esas correcciones.",
+      "sourceReference": "Salsa Verde PG1 / photo 1000099130",
+      "reviewStatus": "transcribed-with-handwritten-corrections"
+    },
+    {
+      "id": "salsa-roja-001",
+      "name": "Salsa Roja",
+      "category": "Salsas",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "comino",
+          "amount": 2.0,
+          "unit": "tsp",
+          "name": "Comino"
+        },
+        {
+          "id": "clavo-entero",
+          "amount": 14.0,
+          "unit": "each",
+          "name": "Clavo entero"
+        },
+        {
+          "id": "ajo-entero-asado",
+          "amount": 4.0,
+          "unit": "oz",
+          "name": "Ajo entero asado"
+        },
+        {
+          "id": "chipotle",
+          "amount": 14.0,
+          "unit": "oz",
+          "name": "Chipotle"
+        },
+        {
+          "id": "sazonador-knorr",
+          "amount": 0.75,
+          "unit": "cup",
+          "name": "Sazonador Knorr"
+        },
+        {
+          "id": "cebolla-asada",
+          "amount": 7.0,
+          "unit": "oz",
+          "name": "Cebolla asada"
+        },
+        {
+          "id": "sal",
+          "amount": 0.125,
+          "unit": "cup",
+          "name": "Sal"
+        },
+        {
+          "id": "agua",
+          "amount": 1.25,
+          "unit": "gal",
+          "name": "Agua"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Procedimiento no visible en la hoja fotografiada; confirmar antes de usar como receta oficial de producción.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "Receta manuscrita. La hoja indica 1/2 lata de chipotle = aproximadamente 14 oz pesadas. Falta el procedimiento.",
+      "sourceReference": "Handwritten Salsa Roja / photo 1000099133",
+      "reviewStatus": "needs-procedure-review"
+    },
+    {
+      "id": "salsa-ranchera-001",
+      "name": "Salsa Ranchera",
+      "category": "Salsas",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "tomate-roma",
+          "amount": 16.35,
+          "unit": "lb",
+          "name": "Tomate Roma"
+        },
+        {
+          "id": "morron-rojo",
+          "amount": 2.0,
+          "unit": "each",
+          "name": "Morrón rojo"
+        },
+        {
+          "id": "morron-verde",
+          "amount": 2.0,
+          "unit": "each",
+          "name": "Morrón verde"
+        },
+        {
+          "id": "ajo",
+          "amount": 0.11,
+          "unit": "oz",
+          "name": "Ajo"
+        },
+        {
+          "id": "cebolla-en-rajas",
+          "amount": 0.6,
+          "unit": "oz",
+          "name": "Cebolla en rajas"
+        },
+        {
+          "id": "chipotle",
+          "amount": 0.75,
+          "unit": "cup",
+          "name": "Chipotle"
+        },
+        {
+          "id": "agua",
+          "amount": 1.0,
+          "unit": "gal",
+          "name": "Agua"
+        },
+        {
+          "id": "pimienta-negra",
+          "amount": 2.0,
+          "unit": "tbsp",
+          "name": "Pimienta negra"
+        },
+        {
+          "id": "oregano",
+          "amount": 2.0,
+          "unit": "tbsp",
+          "name": "Orégano"
+        },
+        {
+          "id": "clavo-entero",
+          "amount": 9.0,
+          "unit": "each",
+          "name": "Clavo entero"
+        },
+        {
+          "id": "hoja-de-laurel",
+          "amount": 8.0,
+          "unit": "each",
+          "name": "Hoja de laurel"
+        },
+        {
+          "id": "knorr-de-pollo",
+          "amount": 2.0,
+          "unit": "cup",
+          "name": "Knorr de pollo"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Poner a hervir el tomate Roma con los morrones ya cortados y sin semilla con el galón de agua.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Agregar el ajo, pimienta, orégano, clavos y hoja de laurel.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s3",
+          "text": "Agregar cebolla en rajas y chipotle.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s4",
+          "text": "Ya hervida, moler y agregar el Knorr de pollo.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s5",
+          "text": "Poner un sartén con mantequilla para freír la cebolla.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s6",
+          "text": "Agregar la salsa a la cebolla y freír de nuevo.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "La cantidad de ajo se tomó del procedimiento impreso (0.11 oz), porque la línea de ingredientes está parcialmente dañada.",
+      "sourceReference": "Salsa Ranchera PG2 / photos 1000099131-9132",
+      "reviewStatus": "transcribed-with-minor-uncertainty"
+    },
+    {
+      "id": "salsa-diabla-001",
+      "name": "Salsa Diabla",
+      "category": "Salsas",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "pimienta",
+          "amount": 1.0,
+          "unit": "tsp",
+          "name": "Pimienta"
+        },
+        {
+          "id": "oregano",
+          "amount": 0.5,
+          "unit": "tsp",
+          "name": "Orégano"
+        },
+        {
+          "id": "comino",
+          "amount": 1.0,
+          "unit": "tsp",
+          "name": "Comino"
+        },
+        {
+          "id": "clavo-entero",
+          "amount": 14.0,
+          "unit": "each",
+          "name": "Clavo entero"
+        },
+        {
+          "id": "tomillo",
+          "amount": 0.25,
+          "unit": "tsp",
+          "name": "Tomillo"
+        },
+        {
+          "id": "ajo",
+          "amount": 20.0,
+          "unit": "clove",
+          "name": "Ajo"
+        },
+        {
+          "id": "chipotle",
+          "amount": 0.5,
+          "unit": "cup",
+          "name": "Chipotle"
+        },
+        {
+          "id": "chile-de-arbol",
+          "amount": 2.0,
+          "unit": "puño",
+          "name": "Chile de árbol"
+        },
+        {
+          "id": "tomatillo",
+          "amount": 10.0,
+          "unit": "each",
+          "name": "Tomatillo"
+        },
+        {
+          "id": "sal",
+          "amount": 0.125,
+          "unit": "cup",
+          "name": "Sal"
+        },
+        {
+          "id": "knorr-de-camaron",
+          "amount": 1.0,
+          "unit": "cup",
+          "name": "Knorr de camarón"
+        },
+        {
+          "id": "chile-guajillo",
+          "amount": 16.0,
+          "unit": "cup",
+          "name": "Chile guajillo"
+        },
+        {
+          "id": "agua",
+          "amount": 1.5,
+          "unit": "gal",
+          "name": "Agua"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Llenar 2 vasos de licuadora con chile guajillo seco y hervir con aproximadamente 1 1/2 galón de agua hasta que quede bien rojo.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Moler pimienta, orégano, comino, clavo, tomillo, ajo, chipotle, chile de árbol, tomatillos, sal y Knorr con el guajillo y su jugo.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s3",
+          "text": "En un sartén calentar mantequilla y freír cebolla en rajas para incorporar la salsa.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s4",
+          "text": "Colar para separar la cebolla.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "El paso 1 impreso fue tachado y reemplazado por la instrucción manuscrita de 2 vasos de licuadora y 1 1/2 galón de agua. Mantequilla y cebolla se mencionan en el proceso sin cantidades.",
+      "sourceReference": "Salsa Diabla PG3 / photos 1000099134-9135",
+      "reviewStatus": "transcribed-with-handwritten-corrections"
+    },
+    {
+      "id": "salsa-arbol-001",
+      "name": "Salsa de Árbol",
+      "category": "Salsas",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "chile-de-arbol",
+          "amount": 2.5,
+          "unit": "lb",
+          "name": "Chile de árbol"
+        },
+        {
+          "id": "tomatillo",
+          "amount": 4.5,
+          "unit": "lb",
+          "name": "Tomatillo"
+        },
+        {
+          "id": "dientes-de-ajo",
+          "amount": 4.25,
+          "unit": "lb",
+          "name": "Dientes de ajo"
+        },
+        {
+          "id": "agua",
+          "amount": 3.0,
+          "unit": "gal",
+          "name": "Agua"
+        },
+        {
+          "id": "knorr-de-pollo",
+          "amount": 1.5,
+          "unit": "cup",
+          "name": "Knorr de pollo"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Tostar en la plancha con aceite el chile de árbol, ajo y tomatillo.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Hervir usando el agua antes de moler, según la corrección manuscrita.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s3",
+          "text": "Moler todo con el agua y el Knorr de pollo.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "La hoja impresa dice 2 galones de agua y 1 cup de Knorr; las notas manuscritas indican 3 galones y +1/2 cup de Knorr. También aparecen medidas alternativas por contenedor que necesitan revisión. La cantidad impresa de ajo (4.25 lb) parece inusual y debe confirmarse.",
+      "sourceReference": "Salsa de Árbol PG4 / photo 1000099136",
+      "reviewStatus": "needs-quantity-review"
+    },
+    {
+      "id": "salsa-morita-001",
+      "name": "Salsa Morita",
+      "category": "Salsas",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "tomate-roma",
+          "amount": 7.2,
+          "unit": "lb",
+          "name": "Tomate Roma"
+        },
+        {
+          "id": "ajo",
+          "amount": 1.8,
+          "unit": "lb",
+          "name": "Ajo"
+        },
+        {
+          "id": "chile-morita",
+          "amount": 3.0,
+          "unit": "lb",
+          "name": "Chile morita"
+        },
+        {
+          "id": "chile-de-arbol",
+          "amount": 4.0,
+          "unit": "oz",
+          "name": "Chile de árbol"
+        },
+        {
+          "id": "cebolla",
+          "amount": 3.0,
+          "unit": "lb",
+          "name": "Cebolla"
+        },
+        {
+          "id": "aceite",
+          "amount": 2.0,
+          "unit": "L",
+          "name": "Aceite"
+        },
+        {
+          "id": "agua",
+          "amount": 5.0,
+          "unit": "L",
+          "name": "Agua"
+        },
+        {
+          "id": "knorr-de-pollo",
+          "amount": 3.0,
+          "unit": "cup",
+          "name": "Knorr de pollo"
+        },
+        {
+          "id": "hielo",
+          "amount": 64.0,
+          "unit": "oz",
+          "name": "Hielo"
+        },
+        {
+          "id": "agua-fria",
+          "amount": 1.0,
+          "unit": "gal",
+          "name": "Agua fría"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Cocer Roma, cebolla y ajo en aceite en una olla.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Tostar chile de árbol y chile morita con aceite durante 5 minutos.",
+          "videoUrl": "",
+          "timerMinutes": 5.0,
+          "timedStep": true
+        },
+        {
+          "id": "s3",
+          "text": "Poner en una olla con aceite y 5 litros de agua y hervir.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s4",
+          "text": "Enfriar la olla. Antes de moler, agregar 64 oz de hielo y 1 galón de agua fría.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s5",
+          "text": "Licuar y agregar el Knorr de pollo.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "La crema está tachada. La hoja contiene varias correcciones: chile morita 3 lb, 2 L de aceite, 64 oz de hielo, 1 galón de agua fría y 3 cups de Knorr. También se ve una cantidad de agua impresa distinta; confirmar antes de fijar versión final.",
+      "sourceReference": "Salsa Morita PG5 / photo 1000099137",
+      "reviewStatus": "needs-quantity-review"
+    },
+    {
+      "id": "salsa-pibil-001",
+      "name": "Salsa Pibil",
+      "category": "Salsas",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "canela-entera",
+          "amount": 2.35,
+          "unit": "oz",
+          "name": "Canela entera"
+        },
+        {
+          "id": "chile-guajillo",
+          "amount": 6.0,
+          "unit": "oz",
+          "name": "Chile guajillo"
+        },
+        {
+          "id": "jugo-de-limon",
+          "amount": 1.0,
+          "unit": "L",
+          "name": "Jugo de limón"
+        },
+        {
+          "id": "vinagre",
+          "amount": 1.0,
+          "unit": "L",
+          "name": "Vinagre"
+        },
+        {
+          "id": "jugo-de-naranja",
+          "amount": 1.0,
+          "unit": "L",
+          "name": "Jugo de naranja"
+        },
+        {
+          "id": "comino",
+          "amount": 1.25,
+          "unit": "oz",
+          "name": "Comino"
+        },
+        {
+          "id": "allspice",
+          "amount": 1.5,
+          "unit": "oz",
+          "name": "Allspice"
+        },
+        {
+          "id": "clavo-entero",
+          "amount": 20.0,
+          "unit": "each",
+          "name": "Clavo entero"
+        },
+        {
+          "id": "cilantro-bola",
+          "amount": 0.2,
+          "unit": "oz",
+          "name": "Cilantro bola"
+        },
+        {
+          "id": "pimienta-negra-molida",
+          "amount": 2.0,
+          "unit": "oz",
+          "name": "Pimienta negra molida"
+        },
+        {
+          "id": "oregano",
+          "amount": 0.7,
+          "unit": "oz",
+          "name": "Orégano"
+        },
+        {
+          "id": "ajo",
+          "amount": 6.0,
+          "unit": "oz",
+          "name": "Ajo"
+        },
+        {
+          "id": "hoja-de-laurel",
+          "amount": 0.9,
+          "unit": "oz",
+          "name": "Hoja de laurel"
+        },
+        {
+          "id": "tomate-roma",
+          "amount": 4.0,
+          "unit": "lb",
+          "name": "Tomate Roma"
+        },
+        {
+          "id": "morron",
+          "amount": 3.0,
+          "unit": "lb",
+          "name": "Morrón"
+        },
+        {
+          "id": "achiote",
+          "amount": 2.0,
+          "unit": "lb",
+          "name": "Achiote"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Asar los chiles, morrón, Roma y ajo. Tostar ligeramente las especias como clavo, comino, orégano, pimienta y cilantro.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Hervir junto con hoja de laurel, allspice y canela con agua suficiente.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s3",
+          "text": "Moler bien con el jugo de naranja, jugo de limón y vinagre.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "Se usó la hoja manuscrita más reciente para las cantidades de 1 L de jugos/vinagre, 4 lb Roma, 3 lb morrón y 6 oz ajo. Se conservó 2 lb de achiote de la hoja impresa PG6 porque no aparece claramente en la actualización manuscrita.",
+      "sourceReference": "Salsa Pibil PG6 + handwritten update / photos 1000099138 and 1000099150",
+      "reviewStatus": "transcribed-merged-sources"
+    },
+    {
+      "id": "salsa-pastor-001",
+      "name": "Salsa Pastor",
+      "category": "Salsas",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "comino-molido",
+          "amount": 8.0,
+          "unit": "oz",
+          "name": "Comino molido"
+        },
+        {
+          "id": "oregano",
+          "amount": 3.0,
+          "unit": "oz",
+          "name": "Orégano"
+        },
+        {
+          "id": "ajo",
+          "amount": 16.0,
+          "unit": "oz",
+          "name": "Ajo"
+        },
+        {
+          "id": "cebolla",
+          "amount": 2.0,
+          "unit": "each",
+          "name": "Cebolla"
+        },
+        {
+          "id": "cilantro-bola",
+          "amount": 8.0,
+          "unit": "oz",
+          "name": "Cilantro bola"
+        },
+        {
+          "id": "knorr-de-pollo",
+          "amount": 16.0,
+          "unit": "oz",
+          "name": "Knorr de pollo"
+        },
+        {
+          "id": "pintura-amarilla",
+          "amount": 3.0,
+          "unit": "oz",
+          "name": "Pintura amarilla"
+        },
+        {
+          "id": "pintura-roja",
+          "amount": 1.0,
+          "unit": "oz",
+          "name": "Pintura roja"
+        },
+        {
+          "id": "pimienta-negra",
+          "amount": 0.25,
+          "unit": "tsp",
+          "name": "Pimienta negra"
+        },
+        {
+          "id": "clavo-entero",
+          "amount": 8.0,
+          "unit": "each",
+          "name": "Clavo entero"
+        },
+        {
+          "id": "chile-guajillo",
+          "amount": 16.0,
+          "unit": "oz",
+          "name": "Chile guajillo"
+        },
+        {
+          "id": "jugo-de-naranja",
+          "amount": 2.0,
+          "unit": "L",
+          "name": "Jugo de naranja"
+        },
+        {
+          "id": "jugo-de-pina",
+          "amount": 2.0,
+          "unit": "L",
+          "name": "Jugo de piña"
+        },
+        {
+          "id": "vinagre",
+          "amount": 2.0,
+          "unit": "L",
+          "name": "Vinagre"
+        },
+        {
+          "id": "sal",
+          "amount": 12.0,
+          "unit": "oz",
+          "name": "Sal"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Hervir el guajillo hasta estar bien rojo.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Juntar las especias y moler con los jugos y vinagre.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s3",
+          "text": "Separar en porciones o contenedores de 3.8 L.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "La nota manuscrita corrige el guajillo a 16 oz pesadas (1 lb exacta). Otra nota indica usar taza de 8 oz para ciertas mediciones.",
+      "sourceReference": "Pastor PG9 / photo 1000099162",
+      "reviewStatus": "transcribed-with-handwritten-corrections"
+    },
+    {
+      "id": "holandesa-001",
+      "name": "Holandesa",
+      "category": "Salsas",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "agua",
+          "amount": 1.5,
+          "unit": "gal",
+          "name": "Agua"
+        },
+        {
+          "id": "mezcla-de-holandesa",
+          "amount": 1.0,
+          "unit": "can",
+          "name": "Mezcla de holandesa"
+        },
+        {
+          "id": "mantequilla",
+          "amount": 3.0,
+          "unit": "lb",
+          "name": "Mantequilla"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Mezclar la holandesa con el agua hasta que no queden bolitas de polvo.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Agregar la mantequilla a una olla y derretirla por completo.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s3",
+          "text": "Agregar la holandesa ya líquida a la olla con la mantequilla.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s4",
+          "text": "Cocinar a fuego lento aproximadamente 1 hora y media.",
+          "videoUrl": "",
+          "timerMinutes": 90.0,
+          "timedStep": true
+        }
+      ],
+      "tests": [],
+      "notes": "",
+      "sourceReference": "Holandesa PG10 / photo 1000099163",
+      "reviewStatus": "transcribed"
+    },
+    {
+      "id": "caldo-camaron-base-001",
+      "name": "Caldo de Camarón",
+      "category": "Salsas",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "pimienta",
+          "amount": 1.0,
+          "unit": "tsp",
+          "name": "Pimienta"
+        },
+        {
+          "id": "oregano",
+          "amount": 0.5,
+          "unit": "tsp",
+          "name": "Orégano"
+        },
+        {
+          "id": "comino",
+          "amount": 1.0,
+          "unit": "tsp",
+          "name": "Comino"
+        },
+        {
+          "id": "tomillo",
+          "amount": 0.25,
+          "unit": "tsp",
+          "name": "Tomillo"
+        },
+        {
+          "id": "clavo-entero",
+          "amount": 14.0,
+          "unit": "each",
+          "name": "Clavo entero"
+        },
+        {
+          "id": "ajo",
+          "amount": 20.0,
+          "unit": "clove",
+          "name": "Ajo"
+        },
+        {
+          "id": "chipotle",
+          "amount": 0.5,
+          "unit": "cup",
+          "name": "Chipotle"
+        },
+        {
+          "id": "chile-de-arbol-seco",
+          "amount": 1.0,
+          "unit": "puño",
+          "name": "Chile de árbol seco"
+        },
+        {
+          "id": "sal",
+          "amount": 0.125,
+          "unit": "cup",
+          "name": "Sal"
+        },
+        {
+          "id": "knorr-de-camaron",
+          "amount": 1.0,
+          "unit": "cup",
+          "name": "Knorr de camarón"
+        },
+        {
+          "id": "tomatillo-verde",
+          "amount": 10.0,
+          "unit": "each",
+          "name": "Tomatillo verde"
+        },
+        {
+          "id": "chile-guajillo-seco",
+          "amount": 2.0,
+          "unit": "blender",
+          "name": "Chile guajillo seco"
+        },
+        {
+          "id": "caparazon-de-camaron",
+          "amount": 5.0,
+          "unit": "lb",
+          "name": "Caparazón de camarón"
+        },
+        {
+          "id": "agua-para-caldo-de-caparazon",
+          "amount": 2.5,
+          "unit": "gal",
+          "name": "Agua para caldo de caparazón"
+        },
+        {
+          "id": "knorr-de-camaron-para-caldo",
+          "amount": 2.0,
+          "unit": "cup",
+          "name": "Knorr de camarón para caldo"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Hervir el guajillo con aproximadamente 1 1/2 galón de agua hasta que esté rojo uniformemente.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Moler todos los condimentos con el guajillo y su jugo en la licuadora.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s3",
+          "text": "En un sartén agregar mantequilla y freír dos puños de cebolla en rajas. Colar la mantequilla para separar la cebolla y agregar la mantequilla a la salsa.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s4",
+          "text": "En una olla agregar agua y el caparazón de camarón. Hervir una bolsa de 5 lb con aproximadamente 2 1/2 galones de agua y 2 cups de Knorr de camarón.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s5",
+          "text": "Colar el caldo para separar el caparazón, combinar según la preparación y porcionar en recipientes.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "La hoja es manuscrita y mezcla la preparación de la salsa con el caldo hecho de caparazón. Las cantidades de mantequilla y cebolla no están especificadas.",
+      "sourceReference": "Caldo de Camarón, master #11 / photo 1000099160",
+      "reviewStatus": "transcribed-with-mixed-process"
+    },
+    {
+      "id": "salsa-chips-001",
+      "name": "Salsa de Chips",
+      "category": "Salsas",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "tomate-isabela",
+          "amount": 5.0,
+          "unit": "can",
+          "name": "Tomate Isabela"
+        },
+        {
+          "id": "cilantro",
+          "amount": 15.0,
+          "unit": "bunch",
           "name": "Cilantro"
         },
         {
-          "id": "salt",
-          "amount": 8,
-          "unit": "g",
-          "name": "Salt"
+          "id": "pimienta",
+          "amount": 2.0,
+          "unit": "tbsp",
+          "name": "Pimienta"
+        },
+        {
+          "id": "oregano",
+          "amount": 1.0,
+          "unit": "tbsp",
+          "name": "Orégano"
+        },
+        {
+          "id": "ajo-molido",
+          "amount": 1.0,
+          "unit": "tbsp",
+          "name": "Ajo molido"
+        },
+        {
+          "id": "sal",
+          "amount": 10.0,
+          "unit": "oz",
+          "name": "Sal"
+        },
+        {
+          "id": "jalapeno",
+          "amount": 15.0,
+          "unit": "each",
+          "name": "Jalapeño"
+        },
+        {
+          "id": "cebolla-picada",
+          "amount": 1.0,
+          "unit": "gal",
+          "name": "Cebolla picada"
         }
       ],
       "steps": [
         {
           "id": "s1",
-          "text": "Blend all ingredients until smooth.",
-          "videoUrl": ""
+          "text": "Poner los 15 jalapeños en la freidora hasta estar bien tostados.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
         },
         {
           "id": "s2",
-          "text": "Taste and adjust salt if needed.",
-          "videoUrl": ""
+          "text": "Moler los jitomates de lata, pero no súper molidos.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
         },
         {
           "id": "s3",
-          "text": "Chill before service.",
-          "videoUrl": ""
+          "text": "Ir echando en un recipiente grande.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s4",
+          "text": "Moler una lata de jitomates con las especias y los jalapeños tostados, bien molidos, y agregar al recipiente.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s5",
+          "text": "Agregar la sal, cebolla picada y cilantro picado, y mezclar.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
         }
       ],
-      "tests": []
+      "tests": [],
+      "notes": "",
+      "sourceReference": "Salsa de Chips PG12 / photo 1000099159",
+      "reviewStatus": "transcribed"
     },
     {
-      "id": "marinade-001",
-      "name": "Chicken Marinade",
-      "category": "Main",
-      "icon": "\ud83c\udf57",
-      "yield": {
-        "text": "2 lbs"
-      },
+      "id": "frijoles-001",
+      "name": "Frijoles",
+      "category": "Preparaciones",
       "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
       "ingredients": [
         {
-          "id": "oil",
-          "amount": 120,
-          "unit": "mL",
-          "name": "Oil"
+          "id": "frijol-seco",
+          "amount": 6.3,
+          "unit": "kg",
+          "name": "Frijol seco"
         },
         {
-          "id": "lime",
-          "amount": 60,
-          "unit": "mL",
-          "name": "Lime juice"
+          "id": "sal",
+          "amount": 8.0,
+          "unit": "oz",
+          "name": "Sal"
         },
         {
-          "id": "garlic",
-          "amount": 15,
-          "unit": "g",
-          "name": "Minced garlic"
+          "id": "oregano",
+          "amount": 1.0,
+          "unit": "tbsp",
+          "name": "Orégano"
         },
         {
-          "id": "salt",
-          "amount": 10,
-          "unit": "g",
-          "name": "Salt"
+          "id": "jalapeno",
+          "amount": 6.0,
+          "unit": "each",
+          "name": "Jalapeño"
         },
         {
-          "id": "paprika",
-          "amount": 8,
-          "unit": "g",
-          "name": "Paprika"
+          "id": "cebolla",
+          "amount": 2.0,
+          "unit": "puño",
+          "name": "Cebolla"
+        },
+        {
+          "id": "ajo",
+          "amount": 6.0,
+          "unit": "clove",
+          "name": "Ajo"
         }
       ],
       "steps": [
         {
           "id": "s1",
-          "text": "Whisk all ingredients together.",
-          "videoUrl": ""
+          "text": "Poner el frijol a remojar el día anterior.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
         },
         {
           "id": "s2",
-          "text": "Coat the chicken thoroughly.",
-          "videoUrl": ""
+          "text": "Para la preparación agregar sal, orégano, jalapeños, cebolla y ajo.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
         },
         {
           "id": "s3",
-          "text": "Marinate at least 30 minutes before cooking.",
-          "videoUrl": ""
+          "text": "Agregar agua al gusto y cocinar hasta que el frijol esté listo.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
         }
       ],
-      "tests": []
+      "tests": [],
+      "notes": "La hoja manuscrita indica 6.30 kg de frijol. La sal parece indicar 8 oz; revisar si se desea fijar como receta oficial.",
+      "sourceReference": "Frijoles PG13 / photo 1000099158",
+      "reviewStatus": "transcribed-with-minor-uncertainty"
+    },
+    {
+      "id": "arroz-001",
+      "name": "Arroz",
+      "category": "Preparaciones",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "tomate",
+          "amount": 6.0,
+          "unit": "each",
+          "name": "Tomate"
+        },
+        {
+          "id": "cebolla",
+          "amount": 2.0,
+          "unit": "puño",
+          "name": "Cebolla"
+        },
+        {
+          "id": "hoja-de-laurel",
+          "amount": 16.0,
+          "unit": "each",
+          "name": "Hoja de laurel"
+        },
+        {
+          "id": "sazonador-de-pollo",
+          "amount": 0.666667,
+          "unit": "cup",
+          "name": "Sazonador de pollo"
+        },
+        {
+          "id": "sazonador-de-tomate",
+          "amount": 0.666667,
+          "unit": "cup",
+          "name": "Sazonador de tomate"
+        },
+        {
+          "id": "agua",
+          "amount": 2.0,
+          "unit": "gal",
+          "name": "Agua"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Licuar los 6 tomates con la cebolla.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Poner a hervir con 2 galones de agua y mezclar los condimentos.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s3",
+          "text": "Cuando hierva, agregar el arroz previamente dorado en la freidora.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s4",
+          "text": "Pasar al contenedor y cocinar durante 22 minutos, tapado con 3 capas de aluminio.",
+          "videoUrl": "",
+          "timerMinutes": 22.0,
+          "timedStep": true
+        }
+      ],
+      "tests": [],
+      "notes": "La cantidad de arroz no aparece en la hoja fotografiada. La nota manuscrita muestra 2/3 cup (158 mL) para el sazonador; parece indicar uno de pollo y uno de tomate.",
+      "sourceReference": "Arroz PG14 / photo 1000099157",
+      "reviewStatus": "needs-rice-quantity"
+    },
+    {
+      "id": "lengua-001",
+      "name": "Lengua",
+      "category": "Preparaciones",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "lengua-de-res",
+          "amount": 1.0,
+          "unit": "case",
+          "name": "Lengua de res"
+        },
+        {
+          "id": "cebolla-partida-a-la-mitad",
+          "amount": 4.0,
+          "unit": "each",
+          "name": "Cebolla partida a la mitad"
+        },
+        {
+          "id": "hoja-de-aguacate",
+          "amount": 10.0,
+          "unit": "puño",
+          "name": "Hoja de aguacate"
+        },
+        {
+          "id": "sal",
+          "amount": 16.0,
+          "unit": "oz",
+          "name": "Sal"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Sacar una caja de lengua y ponerla a hervir.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Agregar cebolla, hoja de aguacate, sal y agua al gusto.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s3",
+          "text": "Hervir aproximadamente de 3 a 6 horas, hasta que la lengua esté blanda y se pueda romper fácilmente.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "La lectura de 4 cebollas y 10 puños de hoja de aguacate proviene de la escritura manuscrita y debe confirmarse.",
+      "sourceReference": "Lengua PG15 / photo 1000099156",
+      "reviewStatus": "needs-quantity-review"
+    },
+    {
+      "id": "tripa-001",
+      "name": "Tripa",
+      "category": "Preparaciones",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "tripa",
+          "amount": 3.0,
+          "unit": "case",
+          "name": "Tripa"
+        },
+        {
+          "id": "ajo",
+          "amount": 2.0,
+          "unit": "tbsp",
+          "name": "Ajo"
+        },
+        {
+          "id": "hoja-de-laurel",
+          "amount": 10.0,
+          "unit": "each",
+          "name": "Hoja de laurel"
+        },
+        {
+          "id": "sazonador-de-adobo",
+          "amount": 0.666667,
+          "unit": "cup",
+          "name": "Sazonador de adobo"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Sacar 3 cajas de tripa y ponerlas en el cooler a descongelar el día anterior.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Cortar en la máquina en pedazos de aproximadamente 4 pulgadas.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s3",
+          "text": "Agregar a una olla y hervir un poco. Lavar bien y regresar a la olla.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s4",
+          "text": "Agregar ajo y 10 hojas de laurel. Cocinar hasta que esté blanda y se rompa fácilmente.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s5",
+          "text": "Cocinar en la plancha durante aproximadamente 7 minutos, agregando sazonador de adobo y cebolla en rajas.",
+          "videoUrl": "",
+          "timerMinutes": 7.0,
+          "timedStep": true
+        }
+      ],
+      "tests": [],
+      "notes": "La hoja está titulada Tripa pero muestra un número de página incorrecto. La cantidad de cebolla en rajas no está indicada.",
+      "sourceReference": "Tripa, master #16 / photo 1000099161",
+      "reviewStatus": "transcribed-with-page-number-mismatch"
+    },
+    {
+      "id": "carnitas-001",
+      "name": "Carnitas",
+      "category": "Preparaciones",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "puerco",
+          "amount": 2.0,
+          "unit": "bola",
+          "name": "Puerco"
+        },
+        {
+          "id": "sal",
+          "amount": 2.5,
+          "unit": "oz",
+          "name": "Sal"
+        },
+        {
+          "id": "jugo-de-limon",
+          "amount": 4.0,
+          "unit": "oz",
+          "name": "Jugo de limón"
+        },
+        {
+          "id": "ajo",
+          "amount": 16.0,
+          "unit": "clove",
+          "name": "Ajo"
+        },
+        {
+          "id": "pintura-amarilla-preparada",
+          "amount": 2.0,
+          "unit": "tbsp",
+          "name": "Pintura amarilla preparada"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Sacar dos bolas de puerco a descongelar el día anterior.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Cortar en partes pequeñas y agregar a una olla junto con la manteca.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s3",
+          "text": "Cocinar a fuego lento hasta que la carne esté blanda.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s4",
+          "text": "Licuar la sal, jugo de limón y 16 ajos; agregar la mezcla a la carne.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s5",
+          "text": "Después de aproximadamente 30 minutos, agregar la pintura preparada con azúcar y agua.",
+          "videoUrl": "",
+          "timerMinutes": 30.0,
+          "timedStep": true
+        }
+      ],
+      "tests": [],
+      "notes": "La cantidad de manteca, azúcar y agua no aparece. La hoja indica que la sal puede variar según la consistencia de la manteca.",
+      "sourceReference": "Carnitas PG17 / photo 1000099154",
+      "reviewStatus": "transcribed-with-unspecified-ingredients"
+    },
+    {
+      "id": "pastor-prep-001",
+      "name": "Pastor",
+      "category": "Preparaciones",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "salsa-pastor",
+          "amount": 52.0,
+          "unit": "oz",
+          "name": "Salsa Pastor"
+        },
+        {
+          "id": "carne",
+          "amount": 2.0,
+          "unit": "bola",
+          "name": "Carne"
+        },
+        {
+          "id": "mantequilla",
+          "amount": 2.0,
+          "unit": "cup",
+          "name": "Mantequilla"
+        },
+        {
+          "id": "cebolla",
+          "amount": 9.0,
+          "unit": "lb",
+          "name": "Cebolla"
+        },
+        {
+          "id": "sal",
+          "amount": 0.5,
+          "unit": "cup",
+          "name": "Sal"
+        },
+        {
+          "id": "pina",
+          "amount": 1.0,
+          "unit": "can",
+          "name": "Piña"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Moler la salsa y porcionarla en contenedores de 52 oz.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Por cada 52 oz de salsa, agregar una bola de carne.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s3",
+          "text": "Para 2 bolas de carne, agregar mantequilla, cebolla, sal y una lata de piña.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s4",
+          "text": "Cocinar sin dejar que se reduzca el jugo de la preparación.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "La hoja contiene una cifra en onzas para 2 bolas de carne que no se puede leer con seguridad; se omitió. La relación clara es 52 oz de salsa por bola de carne.",
+      "sourceReference": "Pastor PG18 / photos 1000099152, 9153, 9155",
+      "reviewStatus": "needs-one-quantity-review"
+    },
+    {
+      "id": "chorizo-prep-001",
+      "name": "Chorizo",
+      "category": "Preparaciones",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "chile-guajillo",
+          "amount": 12.0,
+          "unit": "oz",
+          "name": "Chile guajillo"
+        },
+        {
+          "id": "chile-ancho",
+          "amount": 25.0,
+          "unit": "each",
+          "name": "Chile ancho"
+        },
+        {
+          "id": "chile-pasilla",
+          "amount": 25.0,
+          "unit": "each",
+          "name": "Chile pasilla"
+        },
+        {
+          "id": "chile-de-arbol",
+          "amount": 10.0,
+          "unit": "each",
+          "name": "Chile de árbol"
+        },
+        {
+          "id": "ajo",
+          "amount": 2.0,
+          "unit": "lb",
+          "name": "Ajo"
+        },
+        {
+          "id": "cebolla",
+          "amount": 4.0,
+          "unit": "each",
+          "name": "Cebolla"
+        },
+        {
+          "id": "aceite-vegetal",
+          "amount": 3.0,
+          "unit": "L",
+          "name": "Aceite vegetal"
+        },
+        {
+          "id": "sal",
+          "amount": 24.0,
+          "unit": "oz",
+          "name": "Sal"
+        },
+        {
+          "id": "pintura-roja",
+          "amount": 6.0,
+          "unit": "tbsp",
+          "name": "Pintura roja"
+        },
+        {
+          "id": "clavo",
+          "amount": 1.0,
+          "unit": "tsp",
+          "name": "Clavo"
+        },
+        {
+          "id": "pimienta-entera",
+          "amount": 5.0,
+          "unit": "tbsp",
+          "name": "Pimienta entera"
+        },
+        {
+          "id": "oregano",
+          "amount": 2.0,
+          "unit": "tbsp",
+          "name": "Orégano"
+        },
+        {
+          "id": "comino",
+          "amount": 8.0,
+          "unit": "tbsp",
+          "name": "Comino"
+        },
+        {
+          "id": "anis",
+          "amount": 7.0,
+          "unit": "tsp",
+          "name": "Anís"
+        },
+        {
+          "id": "canela-en-raja",
+          "amount": 6.0,
+          "unit": "each",
+          "name": "Canela en raja"
+        },
+        {
+          "id": "jugo-de-naranja",
+          "amount": 2.0,
+          "unit": "L",
+          "name": "Jugo de naranja"
+        },
+        {
+          "id": "vinagre",
+          "amount": 2.0,
+          "unit": "L",
+          "name": "Vinagre"
+        },
+        {
+          "id": "ajonjoli",
+          "amount": 16.0,
+          "unit": "oz",
+          "name": "Ajonjolí"
+        },
+        {
+          "id": "agua",
+          "amount": 2.0,
+          "unit": "L",
+          "name": "Agua"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Cocinar la canela en agua.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Tostar los chiles, ajo, cebolla y ajonjolí en la plancha.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s3",
+          "text": "Licuar todo con el jugo de naranja, vinagre y especias.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s4",
+          "text": "Agregar el aceite y mezclar muy bien.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s5",
+          "text": "Porcionar en contenedores de 7.5 qt.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "El título dice Chorizo. La hoja impresa muestra PG8, pero el usuario confirmó que ese número de página es incorrecto. Se aplicaron correcciones manuscritas: guajillo 12 oz pesadas, 25 piezas de ancho, 25 piezas de pasilla, 10 chiles de árbol, 6 rajas de canela y 2 L de agua.",
+      "sourceReference": "Chorizo / photo 1000099175",
+      "reviewStatus": "transcribed-with-page-number-mismatch"
+    },
+    {
+      "id": "pibil-prep-001",
+      "name": "Pibil",
+      "category": "Preparaciones",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "puerco",
+          "amount": 2.0,
+          "unit": "bola",
+          "name": "Puerco"
+        },
+        {
+          "id": "salsa-pibil",
+          "amount": 52.0,
+          "unit": "oz",
+          "name": "Salsa Pibil"
+        },
+        {
+          "id": "sal",
+          "amount": 0.666667,
+          "unit": "cup",
+          "name": "Sal"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Sacar a descongelar 2 bolas de puerco el día anterior.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Cortar en pedazos de aproximadamente 4 pulgadas.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s3",
+          "text": "Agregar 52 oz de salsa Pibil y la sal indicada.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s4",
+          "text": "Mezclar bien y cocinar a fuego lento durante aproximadamente 3 a 6 horas.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "La hoja manuscrita indica 2 copitas de 1/3 cup (79 mL) de sal, equivalente a 2/3 cup.",
+      "sourceReference": "Pibil PG20 / photo 1000099151",
+      "reviewStatus": "transcribed"
+    },
+    {
+      "id": "barbacoa-prep-001",
+      "name": "Barbacoa con Consomé",
+      "category": "Preparaciones",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "chile-guajillo",
+          "amount": 2.0,
+          "unit": "puño",
+          "name": "Chile guajillo"
+        },
+        {
+          "id": "chile-ancho",
+          "amount": 2.0,
+          "unit": "puño",
+          "name": "Chile ancho"
+        },
+        {
+          "id": "cebolla",
+          "amount": 2.0,
+          "unit": "each",
+          "name": "Cebolla"
+        },
+        {
+          "id": "ajo",
+          "amount": 1.0,
+          "unit": "puño",
+          "name": "Ajo"
+        },
+        {
+          "id": "comino",
+          "amount": 1.0,
+          "unit": "tsp",
+          "name": "Comino"
+        },
+        {
+          "id": "tomillo",
+          "amount": 1.0,
+          "unit": "tsp",
+          "name": "Tomillo"
+        },
+        {
+          "id": "pimienta-molida",
+          "amount": 1.0,
+          "unit": "tsp",
+          "name": "Pimienta molida"
+        },
+        {
+          "id": "hoja-de-aguacate",
+          "amount": 1.0,
+          "unit": "puño",
+          "name": "Hoja de aguacate"
+        },
+        {
+          "id": "hoja-de-laurel",
+          "amount": 1.0,
+          "unit": "puño pequeño",
+          "name": "Hoja de laurel"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Tostar los chiles, ajo y cebolla.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Hervir todo en agua con las especias.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s3",
+          "text": "Licuar.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s4",
+          "text": "Agregar sal al tanteo.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "La receta no muestra número de página. El título manuscrito dice Barbacoa con Consomé. Hay una línea de 8 oz que no se puede leer con seguridad y se dejó fuera hasta confirmar.",
+      "sourceReference": "Barbacoa con Consomé / photo 1789864761485.jpeg",
+      "reviewStatus": "needs-one-ingredient-review"
+    },
+    {
+      "id": "carne-asada-001",
+      "name": "Carne Asada",
+      "category": "Preparaciones",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "sazonador-goya",
+          "amount": 20.0,
+          "unit": "oz",
+          "name": "Sazonador Goya"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "En un contenedor agregar sazonador Goya, aproximadamente 20 oz, ajustando según la cantidad de carne que se prepare.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "La hoja solo muestra la instrucción de sazonado; no aparece la cantidad de carne ni otros pasos.",
+      "sourceReference": "Carne Asada PG22 / photo 1000099149",
+      "reviewStatus": "incomplete-source"
+    },
+    {
+      "id": "french-toast-001",
+      "name": "French Toast",
+      "category": "Preparaciones",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [
+        {
+          "id": "leche",
+          "amount": 0.75,
+          "unit": "cup",
+          "name": "Leche"
+        },
+        {
+          "id": "canela",
+          "amount": 2.0,
+          "unit": "tsp",
+          "name": "Canela"
+        },
+        {
+          "id": "azucar",
+          "amount": 1.0,
+          "unit": "tbsp",
+          "name": "Azúcar"
+        },
+        {
+          "id": "sal",
+          "amount": 0.5,
+          "unit": "tsp",
+          "name": "Sal"
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Agregar la leche y los condimentos indicados, mezclar bien y usar para la preparación de French Toast.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "La hoja indica 3/4 cup (177 mL) de leche, 2 medidas de 5 cc de canela, 15 cc de azúcar y 2.5 cc de sal. Hay una nota de vainilla cuya cantidad no se distingue con seguridad y se dejó pendiente.",
+      "sourceReference": "French Toast PG23 / photo 1000099149",
+      "reviewStatus": "needs-vanilla-quantity"
+    },
+    {
+      "id": "pancakes-001",
+      "name": "Pancakes",
+      "category": "Preparaciones",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Poner agua en un recipiente.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Agregar la harina y revolver.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s3",
+          "text": "Evitar que queden partes sin revolver.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "La hoja no muestra cantidades de agua ni harina.",
+      "sourceReference": "Pancake PG24 / photo 1000099149",
+      "reviewStatus": "incomplete-source"
+    },
+    {
+      "id": "papa-cajun-001",
+      "name": "Papa Cajun",
+      "category": "Preparaciones",
+      "officialVersion": 1,
+      "yield": {
+        "amount": 1,
+        "unit": "batch",
+        "text": "1 restaurant batch"
+      },
+      "ingredients": [],
+      "steps": [
+        {
+          "id": "s1",
+          "text": "Hervir las papas en la cantidad adecuada de agua.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        },
+        {
+          "id": "s2",
+          "text": "Dejar hervir durante aproximadamente 38 minutos.",
+          "videoUrl": "",
+          "timerMinutes": 38.0,
+          "timedStep": true
+        },
+        {
+          "id": "s3",
+          "text": "Dejar enfriar y pelar cuando estén frías para evitar que salgan como pegoste.",
+          "videoUrl": "",
+          "timedStep": false,
+          "timerMinutes": null
+        }
+      ],
+      "tests": [],
+      "notes": "La hoja no muestra cantidades ni el sazonado Cajun; únicamente el proceso de cocción y enfriado de la papa.",
+      "sourceReference": "Papa Cajun PG25 / photo 1000099149",
+      "reviewStatus": "incomplete-source"
     }
-  ]
+  ],
+  "buildName": "Recipe Overview + Smart Timers",
+  "productionSessions": {}
 }
