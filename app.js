@@ -688,6 +688,7 @@ function renderRecipeOverview(id){
       <div class="overview-actions">
         <button class="primary" id="overviewProduction">👨‍🍳 Start Production</button>
         <button class="good" id="overviewLab">🧪 Recipe Lab</button>
+        <button class="ghost" id="overviewEditRecipe">✏️ Edit Recipe</button>
       </div>
 
       <div class="grid two overview-content">
@@ -732,6 +733,9 @@ function renderRecipeOverview(id){
     selectedRecipeId = r.id;
     labDraft = null;
     showView("lab");
+  });
+  $("#overviewEditRecipe").addEventListener("click", ()=>{
+    startRecipeEdit(r.id);
   });
 }
 
