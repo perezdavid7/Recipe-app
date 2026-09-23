@@ -1,8 +1,8 @@
 (() => {
 "use strict";
 
-const BUILD_VERSION = "2.8";
-const BUILD_NAME = "Recipe Overview + Smart Timers";
+const BUILD_VERSION = "2.9";
+const BUILD_NAME = "Recipe Search + Smart Timers";
 const STORAGE_KEY = "recipeApp_forest_v24";
 const VOLUME_FRACTION_UNITS = new Set(["cup","cups","tbsp","tablespoon","tablespoons","tsp","teaspoon","teaspoons"]);
 const UNIT_GROUPS = {
@@ -35,6 +35,8 @@ let unitPickerTarget = null;
 let libraryScreen = "list";
 let libraryRecipeId = null;
 let editDraft = null;
+let librarySearchQuery = "";
+let productionSearchQuery = "";
 let productionTimerTickId = null;
 let timerAudioCtx = null;
 
@@ -492,7 +494,7 @@ async function init(){
   window.addEventListener("focus",()=>tickProductionTimers(true));
   window.addEventListener("pageshow",()=>tickProductionTimers(true));
   if("serviceWorker" in navigator){
-    navigator.serviceWorker.register("./sw.js?v=280", {updateViaCache:"none"}).then(reg => reg.update()).catch(() => {});
+    navigator.serviceWorker.register("./sw.js?v=290", {updateViaCache:"none"}).then(reg => reg.update()).catch(() => {});
   }
 }
 function bindBaseEvents(){
@@ -541,6 +543,55 @@ function renderView(v){
 function getRecipe(id = selectedRecipeId){
   return state.recipes.find(r => r.id === id) || null;
 }
+function normalizeRecipeSearch(value){
+  return String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase().trim();
+}
+
+function recipeMatchesQuery(recipe,query){
+  const q=normalizeRecipeSearch(query);
+  if(!q)return true;
+  const text=normalizeRecipeSearch([recipe.name,recipe.category,recipe.yield?.text,...(recipe.ingredients||[]).map(i=>i.name),...(Array.isArray(recipe.tags)?recipe.tags:[])].join(" "));
+  return q.split(/\s+/).filter(Boolean).every(term=>text.includes(term));
+}
+
+function updateLibraryRecipeSearch(){
+  const input=$("#recipeSearchInput");
+  if(!input)return;
+  librarySearchQuery=input.value;
+  let shown=0;
+  $(".recipe-open-card",$("#view-library")).forEach(card=>{
+    const recipe=getRecipe(card.dataset.id);
+    const match=!!recipe&&recipeMatchesQuery(recipe,librarySearchQuery);
+    card.hidden=!match;
+    if(match)shown++;
+  });
+  $("#clearRecipeSearch").hidden=!librarySearchQuery.length;
+  $("#recipeSearchCount").textContent=librarySearchQuery.trim()?`${shown} of ${state.recipes.length} recipes`:`${state.recipes.length} recipes`;
+  $("#recipeSearchNoResults").hidden=shown!==0;
+}
+
+function updateProductionRecipeSearch(){
+  const input=$("#prodRecipeSearch"),host=$("#prodRecipeMatches");
+  if(!input||!host)return;
+  productionSearchQuery=input.value;
+  $("#clearProdRecipeSearch").hidden=!productionSearchQuery.length;
+  const query=productionSearchQuery.trim();
+  if(!query){host.innerHTML="";return;}
+  const matches=state.recipes.filter(recipe=>recipeMatchesQuery(recipe,query));
+  if(!matches.length){host.innerHTML=`<div class="empty recipe-search-empty">No recipes found. Try another keyword.</div>`;return;}
+  const results=matches.slice(0,12);
+  host.innerHTML=`
+    <div class="small">${matches.length} matching recipe${matches.length===1?"":"s"}</div>
+    ${results.map(recipe=>`
+      <button type="button" class="production-recipe-match" data-id="${esc(recipe.id)}" ${recipe.id===selectedRecipeId?'aria-current="true"':""}>
+        <span class="production-recipe-icon" aria-hidden="true">${esc(recipe.icon||"🍽️")}</span>
+        <span><strong>${esc(recipe.name)}</strong><span class="small">${esc(recipe.category||"Recipe")}${recipe.id===selectedRecipeId?" · Current recipe":""}</span></span>
+      </button>
+    `).join("")}
+    ${matches.length>results.length?`<div class="small">Showing the first ${results.length} results. Enter more keywords to narrow your search.</div>`:""}
+  `;
+}
+
 function recipeSelect(id){
   return `<select id="${id}">${state.recipes.map(r => `<option value="${esc(r.id)}" ${r.id===selectedRecipeId?"selected":""}>${esc(r.name)}</option>`).join("")}</select>`;
 }
@@ -573,6 +624,16 @@ function renderLibrary(){
         <span class="badge">Kitchen Pro</span>
       </div>
 
+      <div class="recipe-search-field" role="search" aria-label="Find a recipe">
+        <label for="recipeSearchInput">Find a recipe</label>
+        <div class="recipe-search-control">
+          <span class="recipe-search-icon" aria-hidden="true">🔎</span>
+          <input type="search" id="recipeSearchInput" value="${esc(librarySearchQuery)}" placeholder="Name, category, or ingredient" autocomplete="off" aria-label="Search recipes by name, category, or ingredient">
+          <button type="button" id="clearRecipeSearch" class="recipe-search-clear" aria-label="Clear recipe search" hidden>✕</button>
+        </div>
+        <div id="recipeSearchCount" class="small recipe-search-count" role="status" aria-live="polite"></div>
+      </div>
+
       <div class="recipe-list">
         ${state.recipes.map(r => `
           <article class="recipe-card recipe-open-card" data-id="${esc(r.id)}" tabindex="0" role="button" aria-label="Open ${esc(r.name)}">
@@ -594,6 +655,8 @@ function renderLibrary(){
         `).join("")}
       </div>
 
+      <div id="recipeSearchNoResults" class="empty recipe-search-empty" hidden>No recipes found. Try another keyword.</div>
+
       <button class="cta-wide" id="libraryImportBtn">＋ Add New Recipe</button>
 
       <button class="tip-card tip-action" id="betterRecipesTip" type="button">
@@ -609,6 +672,13 @@ function renderLibrary(){
     </div>
   `;
 
+  $("#recipeSearchInput").addEventListener("input", updateLibraryRecipeSearch);
+  $("#clearRecipeSearch").addEventListener("click", () => {
+    $("#recipeSearchInput").value = "";
+    updateLibraryRecipeSearch();
+    $("#recipeSearchInput").focus();
+  });
+  updateLibraryRecipeSearch();
   $("#libraryImportBtn").addEventListener("click", ()=>showView("import"));
   $("#betterRecipesTip").addEventListener("click", ()=>{
     const first = state.recipes[0];
@@ -1048,6 +1118,16 @@ function renderProduction(){
           <div style="min-width:180px">${recipeSelect("prodRecipe")}</div>
         </div>
 
+        <div class="field recipe-search-field" role="search" aria-label="Find a production recipe">
+          <label for="prodRecipeSearch">Find a recipe</label>
+          <div class="recipe-search-control">
+            <span class="recipe-search-icon" aria-hidden="true">🔎</span>
+            <input type="search" id="prodRecipeSearch" value="${esc(productionSearchQuery)}" placeholder="Name or ingredient" autocomplete="off" aria-label="Search production recipes">
+            <button type="button" id="clearProdRecipeSearch" class="recipe-search-clear" aria-label="Clear production recipe search" hidden>✕</button>
+          </div>
+          <div id="prodRecipeMatches" class="production-recipe-matches" aria-live="polite"></div>
+        </div>
+
         <div class="field">
           <label>Batch size</label>
           <select id="prodScale">
@@ -1091,7 +1171,21 @@ function renderProduction(){
     </div>
   `;
   $("#prodScale").value=String(session.scale||1);
-  $("#prodRecipe").addEventListener("change", e => { selectedRecipeId = e.target.value; renderProduction(); });
+  $("#prodRecipe").addEventListener("change", e => { selectedRecipeId = e.target.value; productionSearchQuery = ""; renderProduction(); });
+  $("#prodRecipeSearch").addEventListener("input", updateProductionRecipeSearch);
+  $("#clearProdRecipeSearch").addEventListener("click", () => {
+    $("#prodRecipeSearch").value = "";
+    updateProductionRecipeSearch();
+    $("#prodRecipeSearch").focus();
+  });
+  $("#prodRecipeMatches").addEventListener("click", event => {
+    const button = event.target.closest("button[data-id]");
+    if(!button) return;
+    selectedRecipeId = button.dataset.id;
+    productionSearchQuery = "";
+    renderProduction();
+  });
+  updateProductionRecipeSearch();
   $("#prodScale").addEventListener("change", e => {
     const s=getProductionSession();
     s.scale=Number(e.target.value)||1;
