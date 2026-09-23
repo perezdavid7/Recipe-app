@@ -1,9 +1,9 @@
-const CACHE_NAME = "kitchen-pro-v290";
+const CACHE_NAME = "kitchen-pro-v291";
 const CORE = [
   "./",
   "./index.html",
-  "./styles.css?v=290",
-  "./app.js?v=290",
+  "./styles.css?v=291",
+  "./app.js?v=291",
   "./kitchenpro-v28.webmanifest",
   "./apple-touch-icon.png",
   "./favicon-32.png",

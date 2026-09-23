@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const BUILD_VERSION = "2.9";
+const BUILD_VERSION = "2.9.1";
 const BUILD_NAME = "Recipe Search + Smart Timers";
 const STORAGE_KEY = "recipeApp_forest_v24";
 const VOLUME_FRACTION_UNITS = new Set(["cup","cups","tbsp","tablespoon","tablespoons","tsp","teaspoon","teaspoons"]);
@@ -494,7 +494,7 @@ async function init(){
   window.addEventListener("focus",()=>tickProductionTimers(true));
   window.addEventListener("pageshow",()=>tickProductionTimers(true));
   if("serviceWorker" in navigator){
-    navigator.serviceWorker.register("./sw.js?v=290", {updateViaCache:"none"}).then(reg => reg.update()).catch(() => {});
+    navigator.serviceWorker.register("./sw.js?v=291", {updateViaCache:"none"}).then(reg => reg.update()).catch(() => {});
   }
 }
 function bindBaseEvents(){
@@ -559,7 +559,7 @@ function updateLibraryRecipeSearch(){
   if(!input)return;
   librarySearchQuery=input.value;
   let shown=0;
-  $(".recipe-open-card",$("#view-library")).forEach(card=>{
+  $$(".recipe-open-card",$("#view-library")).forEach(card=>{
     const recipe=getRecipe(card.dataset.id);
     const match=!!recipe&&recipeMatchesQuery(recipe,librarySearchQuery);
     card.hidden=!match;
