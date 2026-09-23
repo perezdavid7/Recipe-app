@@ -407,3 +407,22 @@ main{margin-top:8px}
 .production-recipe-match[aria-current="true"]{border-color:var(--forest-2);background:#f1f7f1}
 .production-recipe-match .production-recipe-icon{font-size:1.45rem;flex:none}
 .production-recipe-match .small{display:block;font-weight:500;margin-top:2px}
+
+/* V2.9.3 mobile search viewport: reveal results while the on-screen keyboard is open */
+body.recipe-search-active{
+  padding-bottom:12px;
+}
+body.recipe-search-active .bottom-nav{
+  display:none;
+}
+body.recipe-search-active .toolbar{
+  position:static;
+}
+body.recipe-search-active .recipe-search-field{
+  scroll-margin-top:8px;
+}
+@media(max-width:700px){
+  body.recipe-search-active .app-shell{
+    padding-bottom:12px;
+  }
+}

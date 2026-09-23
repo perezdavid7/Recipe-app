@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const BUILD_VERSION = "2.9.2";
+const BUILD_VERSION = "2.9.3";
 const BUILD_NAME = "Recipe Search + Smart Timers";
 const STORAGE_KEY = "recipeApp_forest_v24";
 const VOLUME_FRACTION_UNITS = new Set(["cup","cups","tbsp","tablespoon","tablespoons","tsp","teaspoon","teaspoons"]);
@@ -495,7 +495,7 @@ async function init(){
   window.addEventListener("focus",()=>tickProductionTimers(true));
   window.addEventListener("pageshow",()=>tickProductionTimers(true));
   if("serviceWorker" in navigator){
-    navigator.serviceWorker.register("./sw.js?v=292", {updateViaCache:"none"}).then(reg => reg.update()).catch(() => {});
+    navigator.serviceWorker.register("./sw.js?v=293", {updateViaCache:"none"}).then(reg => reg.update()).catch(() => {});
   }
 }
 function bindBaseEvents(){
@@ -617,6 +617,29 @@ function updateLabRecipeSearch(){
   `;
 }
 
+function bindRecipeSearchViewport(input){
+  if(!input)return;
+  const bringIntoView=()=>{
+    const field=input.closest(".recipe-search-field");
+    if(!field)return;
+    field.scrollIntoView({behavior:"smooth",block:"start"});
+  };
+  input.addEventListener("focus",()=>{
+    document.body.classList.add("recipe-search-active");
+    requestAnimationFrame(bringIntoView);
+    setTimeout(bringIntoView,180);
+    setTimeout(bringIntoView,420);
+  });
+  input.addEventListener("blur",()=>{
+    setTimeout(()=>{
+      const active=document.activeElement;
+      if(!active?.closest?.(".recipe-search-field")){
+        document.body.classList.remove("recipe-search-active");
+      }
+    },180);
+  });
+}
+
 function recipeSelect(id){
   return `<select id="${id}">${state.recipes.map(r => `<option value="${esc(r.id)}" ${r.id===selectedRecipeId?"selected":""}>${esc(r.name)}</option>`).join("")}</select>`;
 }
@@ -697,6 +720,7 @@ function renderLibrary(){
     </div>
   `;
 
+  bindRecipeSearchViewport($("#recipeSearchInput"));
   $("#recipeSearchInput").addEventListener("input", updateLibraryRecipeSearch);
   $("#clearRecipeSearch").addEventListener("click", () => {
     $("#recipeSearchInput").value = "";
@@ -1197,6 +1221,7 @@ function renderProduction(){
   `;
   $("#prodScale").value=String(session.scale||1);
   $("#prodRecipe").addEventListener("change", e => { selectedRecipeId = e.target.value; productionSearchQuery = ""; renderProduction(); });
+  bindRecipeSearchViewport($("#prodRecipeSearch"));
   $("#prodRecipeSearch").addEventListener("input", updateProductionRecipeSearch);
   $("#clearProdRecipeSearch").addEventListener("click", () => {
     $("#prodRecipeSearch").value = "";
@@ -1429,6 +1454,7 @@ function renderLab(){
     </div>
   `;
   $("#labRecipe").addEventListener("change", e => { selectedRecipeId = e.target.value; labDraft = null; labSearchQuery = ""; renderLab(); });
+  bindRecipeSearchViewport($("#labRecipeSearch"));
   $("#labRecipeSearch").addEventListener("input", updateLabRecipeSearch);
   $("#clearLabRecipeSearch").addEventListener("click", () => {
     $("#labRecipeSearch").value = "";
