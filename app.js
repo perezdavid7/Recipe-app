@@ -1,7 +1,7 @@
 (() => {
 "use strict";
 
-const BUILD_VERSION = "2.9.1";
+const BUILD_VERSION = "2.9.2";
 const BUILD_NAME = "Recipe Search + Smart Timers";
 const STORAGE_KEY = "recipeApp_forest_v24";
 const VOLUME_FRACTION_UNITS = new Set(["cup","cups","tbsp","tablespoon","tablespoons","tsp","teaspoon","teaspoons"]);
@@ -37,6 +37,7 @@ let libraryRecipeId = null;
 let editDraft = null;
 let librarySearchQuery = "";
 let productionSearchQuery = "";
+let labSearchQuery = "";
 let productionTimerTickId = null;
 let timerAudioCtx = null;
 
@@ -494,7 +495,7 @@ async function init(){
   window.addEventListener("focus",()=>tickProductionTimers(true));
   window.addEventListener("pageshow",()=>tickProductionTimers(true));
   if("serviceWorker" in navigator){
-    navigator.serviceWorker.register("./sw.js?v=291", {updateViaCache:"none"}).then(reg => reg.update()).catch(() => {});
+    navigator.serviceWorker.register("./sw.js?v=292", {updateViaCache:"none"}).then(reg => reg.update()).catch(() => {});
   }
 }
 function bindBaseEvents(){
@@ -589,6 +590,30 @@ function updateProductionRecipeSearch(){
       </button>
     `).join("")}
     ${matches.length>results.length?`<div class="small">Showing the first ${results.length} results. Enter more keywords to narrow your search.</div>`:""}
+  `;
+}
+
+function updateLabRecipeSearch(){
+  const input=$("#labRecipeSearch"),host=$("#labRecipeMatches");
+  if(!input||!host)return;
+  labSearchQuery=input.value;
+  $("#clearLabRecipeSearch").hidden=!labSearchQuery.length;
+  const query=labSearchQuery.trim();
+  if(!query){host.innerHTML="";return;}
+  const matches=state.recipes.filter(recipe=>recipeMatchesQuery(recipe,query));
+  if(!matches.length){
+    host.innerHTML=`<div class="empty recipe-search-empty">No recipes found. Try another keyword.</div>`;
+    return;
+  }
+  const results=matches.slice(0,12);
+  host.innerHTML=`
+    <div class="small">${matches.length} matching recipe${matches.length===1?"":"s"}</div>
+    ${results.map(recipe=>`
+      <button type="button" class="production-recipe-match lab-recipe-match" data-id="${esc(recipe.id)}" ${recipe.id===selectedRecipeId?'aria-current="true"':""}>
+        <span class="production-recipe-icon" aria-hidden="true">${esc(recipe.icon||"🍽️")}</span>
+        <span><strong>${esc(recipe.name)}</strong><span class="small">${esc(recipe.category||"Recipe")}${recipe.id===selectedRecipeId?" · Current recipe":""}</span></span>
+      </button>
+    `).join("")}
   `;
 }
 
@@ -1311,6 +1336,16 @@ function renderLab(){
           <div style="min-width:180px">${recipeSelect("labRecipe")}</div>
         </div>
 
+<div class="field recipe-search-field" role="search" aria-label="Find a Recipe Lab recipe">
+          <label for="labRecipeSearch">Find a recipe</label>
+          <div class="recipe-search-control">
+            <span class="recipe-search-icon" aria-hidden="true">🔎</span>
+            <input type="search" id="labRecipeSearch" value="${esc(labSearchQuery)}" placeholder="Name, category, or ingredient" autocomplete="off" aria-label="Search Recipe Lab recipes">
+            <button type="button" id="clearLabRecipeSearch" class="recipe-search-clear" aria-label="Clear Recipe Lab search" hidden>✕</button>
+          </div>
+          <div id="labRecipeMatches" class="production-recipe-matches" aria-live="polite"></div>
+        </div>
+
         <div class="note" ${last?.nextTime && last.decision!=="winner" ? "" : 'style="display:none"'}>
           <strong>From the last test:</strong>
           <div style="margin-top:5px">${esc(last?.nextTime || "")}</div>
@@ -1393,7 +1428,22 @@ function renderLab(){
       <div id="labHistory"></div>
     </div>
   `;
-  $("#labRecipe").addEventListener("change", e => { selectedRecipeId = e.target.value; labDraft = null; renderLab(); });
+  $("#labRecipe").addEventListener("change", e => { selectedRecipeId = e.target.value; labDraft = null; labSearchQuery = ""; renderLab(); });
+  $("#labRecipeSearch").addEventListener("input", updateLabRecipeSearch);
+  $("#clearLabRecipeSearch").addEventListener("click", () => {
+    $("#labRecipeSearch").value = "";
+    updateLabRecipeSearch();
+    $("#labRecipeSearch").focus();
+  });
+  $("#labRecipeMatches").addEventListener("click", event => {
+    const button = event.target.closest("button[data-id]");
+    if(!button) return;
+    selectedRecipeId = button.dataset.id;
+    labDraft = null;
+    labSearchQuery = "";
+    renderLab();
+  });
+  updateLabRecipeSearch();
   $("#labScale").value = String(labDraft.scale);
   $("#labDecision").value = labDraft.decision;
   $("#labScale").addEventListener("change", e => {
