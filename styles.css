@@ -426,3 +426,77 @@ body.recipe-search-active .recipe-search-field{
     padding-bottom:12px;
   }
 }
+
+
+/* V2.10 photo recipe scanning */
+.import-method-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:16px 0 12px;
+}
+.import-method-btn{
+  min-height:86px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:12px;
+  text-align:left;
+  padding:14px;
+}
+.import-method-btn:disabled,
+#parseRecipeBtn:disabled{opacity:.55;cursor:not-allowed}
+.import-method-icon{font-size:1.65rem;line-height:1}
+.import-method-btn span:last-child{display:grid;gap:3px}
+.import-method-btn small{display:block;font-weight:650;opacity:.78;line-height:1.25}
+.import-divider{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:var(--muted);
+  font-size:.82rem;
+  font-weight:850;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  margin:14px 0;
+}
+.import-divider::before,.import-divider::after{
+  content:"";
+  height:1px;
+  background:var(--line);
+  flex:1;
+}
+.photo-scan-status{
+  background:#f4efe5;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:12px;
+  margin:10px 0 14px;
+}
+.photo-scan-status.error{
+  background:#fff3ec;
+  border-color:#e4b08c;
+}
+.photo-scan-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:.9rem;
+  font-weight:800;
+}
+.photo-scan-progress{
+  height:8px;
+  border-radius:999px;
+  overflow:hidden;
+  background:#e6dcc9;
+  margin-top:9px;
+}
+.photo-scan-progress>div{
+  width:0;
+  height:100%;
+  background:linear-gradient(90deg,var(--forest),var(--amber));
+  transition:width .18s ease;
+}
+@media(max-width:560px){
+  .import-method-grid{grid-template-columns:1fr}
+}
