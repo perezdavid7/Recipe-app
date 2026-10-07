@@ -1,8 +1,8 @@
 (() => {
 "use strict";
 
-const BUILD_VERSION = "2.9.3";
-const BUILD_NAME = "Recipe Search + Smart Timers";
+const BUILD_VERSION = "2.10.0";
+const BUILD_NAME = "Photo Recipe Scan + Smart Timers";
 const STORAGE_KEY = "recipeApp_forest_v24";
 const VOLUME_FRACTION_UNITS = new Set(["cup","cups","tbsp","tablespoon","tablespoons","tsp","teaspoon","teaspoons"]);
 const UNIT_GROUPS = {
@@ -40,6 +40,7 @@ let productionSearchQuery = "";
 let labSearchQuery = "";
 let productionTimerTickId = null;
 let timerAudioCtx = null;
+let recipePhotoScanBusy = false;
 
 const $ = (s, root=document) => root.querySelector(s);
 const $$ = (s, root=document) => [...root.querySelectorAll(s)];
@@ -1619,6 +1620,123 @@ function renderLabHistory(){
   `).join("");
 }
 
+function friendlyOcrStatus(status){
+  const s = String(status || "").toLowerCase();
+  if(s.includes("loading tesseract core")) return "Loading photo reader…";
+  if(s.includes("initializing tesseract")) return "Starting photo reader…";
+  if(s.includes("loading language")) return "Loading English + Spanish…";
+  if(s.includes("initializing api")) return "Preparing text recognition…";
+  if(s.includes("recognizing text")) return "Reading recipe text…";
+  return "Reading recipe…";
+}
+function setRecipePhotoStatus(message, progress=null, isError=false){
+  const box = $("#recipePhotoStatus");
+  if(!box) return;
+  box.hidden = false;
+  box.classList.toggle("error", !!isError);
+  const label = $("#recipePhotoStatusText", box);
+  const bar = $("#recipePhotoProgressBar", box);
+  if(label) label.textContent = message;
+  if(bar){
+    const pct = Number.isFinite(Number(progress)) ? Math.max(0, Math.min(100, Number(progress))) : 0;
+    bar.style.width = pct + "%";
+    bar.parentElement.hidden = !Number.isFinite(Number(progress));
+  }
+}
+function setRecipePhotoButtonsDisabled(disabled){
+  ["#takeRecipePhoto","#chooseRecipePhoto","#parseRecipeBtn"].forEach(sel => {
+    const el = $(sel);
+    if(el) el.disabled = !!disabled;
+  });
+}
+function normalizeOcrRecipeText(text){
+  return String(text || "")
+    .replace(/\r/g,"")
+    .replace(/[ \t]+/g," ")
+    .replace(/(\d)\s*\/\s*(\d)/g,"$1/$2")
+    .split("\n")
+    .map(line => line.trim())
+    .filter(Boolean)
+    .join("\n");
+}
+async function recipePhotoToCanvas(file){
+  const url = URL.createObjectURL(file);
+  try{
+    const img = new Image();
+    await new Promise((resolve,reject)=>{
+      img.onload=resolve;
+      img.onerror=()=>reject(new Error("Could not open that photo"));
+      img.src=url;
+    });
+    const maxDimension = 2400;
+    const naturalW = img.naturalWidth || img.width;
+    const naturalH = img.naturalHeight || img.height;
+    if(!naturalW || !naturalH) throw new Error("That photo has no readable image data");
+    const scale = Math.min(1, maxDimension / Math.max(naturalW,naturalH));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(naturalW * scale));
+    canvas.height = Math.max(1, Math.round(naturalH * scale));
+    const ctx = canvas.getContext("2d", {alpha:false});
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    return canvas;
+  }finally{
+    URL.revokeObjectURL(url);
+  }
+}
+async function importRecipeFromPhoto(file){
+  if(!file || recipePhotoScanBusy) return;
+  if(!String(file.type || "").startsWith("image/")){
+    toast("Choose a photo of a recipe");
+    return;
+  }
+  if(!window.Tesseract?.createWorker){
+    setRecipePhotoStatus("Photo reader could not load. Check your internet connection and try again.", null, true);
+    toast("Photo reader unavailable");
+    return;
+  }
+  recipePhotoScanBusy = true;
+  setRecipePhotoButtonsDisabled(true);
+  setRecipePhotoStatus("Preparing photo…", 2);
+  let worker = null;
+  try{
+    const canvas = await recipePhotoToCanvas(file);
+    worker = await window.Tesseract.createWorker(["eng","spa"], 1, {
+      logger:m=>{
+        const pct = Math.round((Number(m?.progress) || 0) * 100);
+        setRecipePhotoStatus(friendlyOcrStatus(m?.status), pct);
+      }
+    });
+    setRecipePhotoStatus("Reading recipe text…", 10);
+    const result = await worker.recognize(canvas);
+    const text = normalizeOcrRecipeText(result?.data?.text);
+    if(text.length < 12){
+      throw new Error("I couldn't find enough recipe text in that photo");
+    }
+    setRecipePhotoStatus("Recipe text found. Building the review…", 100);
+    importDraft = parseRecipeText(text);
+    importDraft.importSource = "photo";
+    renderImport();
+    toast("Photo read — review before saving");
+  }catch(err){
+    console.error("Recipe photo scan failed", err);
+    const message = err?.message || "Could not read that photo";
+    setRecipePhotoStatus(message + ". Try a clear, straight-on photo with good light.", null, true);
+    toast("Could not read recipe photo");
+  }finally{
+    if(worker){
+      try{ await worker.terminate(); }catch(_){}
+    }
+    recipePhotoScanBusy = false;
+    setRecipePhotoButtonsDisabled(false);
+    const cameraInput = $("#recipeCameraInput");
+    const photoInput = $("#recipePhotoInput");
+    if(cameraInput) cameraInput.value = "";
+    if(photoInput) photoInput.value = "";
+  }
+}
+
 function renderImport(){
   const host = $("#view-import");
   if(!importDraft){
@@ -1626,14 +1744,39 @@ function renderImport(){
       <div class="grid two">
         <div class="card">
           <div class="section-head">
-            <div><h2>Import Recipe</h2><div class="subtle">Paste a recipe and let the app separate the title, yield, ingredients, and process.</div></div>
-            <span class="badge">Paste & Parse</span>
+            <div><h2>Import Recipe</h2><div class="subtle">Take a picture, choose a photo, or paste recipe text. Everything goes through the same review before saving.</div></div>
+            <span class="badge">Photo + Paste</span>
           </div>
+
+          <div class="import-method-grid">
+            <button type="button" class="import-method-btn primary" id="takeRecipePhoto">
+              <span class="import-method-icon">📷</span>
+              <span><strong>Take Photo</strong><small>Snap a printed recipe</small></span>
+            </button>
+            <button type="button" class="import-method-btn ghost" id="chooseRecipePhoto">
+              <span class="import-method-icon">🖼️</span>
+              <span><strong>Choose Photo</strong><small>Use a saved picture or screenshot</small></span>
+            </button>
+          </div>
+          <input id="recipeCameraInput" class="file-input" type="file" accept="image/*" capture="environment">
+          <input id="recipePhotoInput" class="file-input" type="file" accept="image/*">
+
+          <div id="recipePhotoStatus" class="photo-scan-status" hidden>
+            <div class="photo-scan-row">
+              <span>🔎</span>
+              <span id="recipePhotoStatusText">Preparing photo…</span>
+            </div>
+            <div class="photo-scan-progress"><div id="recipePhotoProgressBar"></div></div>
+          </div>
+
+          <div class="import-divider"><span>or paste text</span></div>
+
           <div class="field">
             <label>Recipe text</label>
-            <textarea id="pasteRecipe" style="min-height:320px" placeholder="Chocolate Chip Cookies&#10;Yield: 24 cookies&#10;&#10;Ingredients&#10;2 cups flour&#10;1 cup sugar&#10;2 eggs&#10;&#10;Directions&#10;Mix everything together.&#10;Bake at 350°F for 12 minutes."></textarea>
+            <textarea id="pasteRecipe" style="min-height:260px" placeholder="Chocolate Chip Cookies&#10;Yield: 24 cookies&#10;&#10;Ingredients&#10;2 cups flour&#10;1 cup sugar&#10;2 eggs&#10;&#10;Directions&#10;Mix everything together.&#10;Bake at 350°F for 12 minutes."></textarea>
           </div>
-          <button class="primary" id="parseRecipeBtn">Parse Recipe</button>
+          <button class="primary" id="parseRecipeBtn">Parse Pasted Recipe</button>
+          <div class="footer-note">Photo reading supports English and Spanish. A clear, straight-on photo with good lighting gives the best results.</div>
         </div>
         <div class="card">
           <h3>What the importer looks for</h3>
@@ -1643,7 +1786,7 @@ function renderImport(){
             <div style="margin-top:7px"><strong>Ingredients</strong> — quantity + unit + ingredient name</div>
             <div style="margin-top:7px"><strong>Process</strong> — directions, method, or preparation steps</div>
           </div>
-          <div class="footer-note">Anything unclear is flagged for review instead of being silently guessed.</div>
+          <div class="footer-note">Anything unclear is flagged for review instead of being silently guessed. The photo itself is not saved with the recipe.</div>
         </div>
       </div>
     `;
@@ -1651,8 +1794,13 @@ function renderImport(){
       const text = $("#pasteRecipe").value.trim();
       if(!text){ toast("Paste a recipe first"); return; }
       importDraft = parseRecipeText(text);
+      importDraft.importSource = "paste";
       renderImport();
     });
+    $("#takeRecipePhoto").addEventListener("click", () => $("#recipeCameraInput").click());
+    $("#chooseRecipePhoto").addEventListener("click", () => $("#recipePhotoInput").click());
+    $("#recipeCameraInput").addEventListener("change", e => importRecipeFromPhoto(e.target.files?.[0]));
+    $("#recipePhotoInput").addEventListener("change", e => importRecipeFromPhoto(e.target.files?.[0]));
   } else {
     renderImportReview();
   }
