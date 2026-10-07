@@ -8,12 +8,12 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Kitchen Pro">
-  <meta name="description" content="Kitchen Pro: recipe library, production mode, recipe lab, and smart step timers.">
+  <meta name="description" content="Kitchen Pro: recipe library, production mode, recipe lab, photo recipe scanning, and smart step timers.">
   <link rel="manifest" href="kitchenpro-v28.webmanifest">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-  <link rel="stylesheet" href="styles.css?v=293">
+  <link rel="stylesheet" href="styles.css?v=2100">
 </head>
 <body>
   <div class="app-shell">
@@ -32,12 +32,12 @@
       <div class="hero-body">
         <div class="hero-copy">
           <h1>Better recipes. A brighter kitchen.</h1>
-          <p>Build official recipes, test new versions, import pasted recipes, and keep kitchen workflows cleaner on Android and iPhone.</p>
+          <p>Build official recipes, test new versions, scan recipes from photos, import pasted recipes, and keep kitchen workflows cleaner on Android and iPhone.</p>
           <div class="hero-actions">
             <button class="primary" id="heroGoLibrary">Open Library</button>
             <button class="ghost" id="heroGoImport" style="color:white;border-color:rgba(255,255,255,.22)">Import Recipe</button>
           </div>
-          <div class="version-tag">Build <span id="buildTag">V2.9.3 Search Keyboard View</span></div>
+          <div class="version-tag">Build <span id="buildTag">V2.10 Photo Recipe Scan</span></div>
         </div>
         <div class="hero-stats">
           <div class="stat"><div class="num" id="statRecipes">0</div><div class="lbl">Recipes</div></div>
@@ -62,7 +62,7 @@
       </button>
       <button class="mode-btn" data-view="import">
         <div class="icon">⬇️</div>
-        <div><strong>Import</strong><div class="meta">Paste a recipe</div></div>
+        <div><strong>Import</strong><div class="meta">Photo or paste</div></div>
       </button>
       <button class="mode-btn" data-view="data">
         <div class="icon">💾</div>
@@ -93,6 +93,7 @@
   <div id="sheetHost"></div>
   <input id="jsonImportFile" class="file-input" type="file" accept=".json,application/json">
 
-  <script src="app.js?v=293"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@7.0.0/dist/tesseract.min.js"></script>
+  <script src="app.js?v=2100"></script>
 </body>
 </html>
