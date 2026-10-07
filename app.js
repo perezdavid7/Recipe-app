@@ -1,8 +1,8 @@
 (() => {
 "use strict";
 
-const BUILD_VERSION = "2.10.0";
-const BUILD_NAME = "Photo Recipe Scan + Smart Timers";
+const BUILD_VERSION = "2.10.1";
+const BUILD_NAME = "Kitchen Fractions + Photo Recipe Scan";
 const STORAGE_KEY = "recipeApp_forest_v24";
 const VOLUME_FRACTION_UNITS = new Set(["cup","cups","tbsp","tablespoon","tablespoons","tsp","teaspoon","teaspoons"]);
 const UNIT_GROUPS = {
@@ -53,6 +53,85 @@ const fmt = n => {
   if (!Number.isFinite(x)) return "";
   return Number.isInteger(x) ? String(x) : String(Math.round(x*1000)/1000);
 };
+
+const KITCHEN_FRACTIONS = [
+  [0, ""],
+  [1/8, "⅛"],
+  [1/4, "¼"],
+  [1/3, "⅓"],
+  [3/8, "⅜"],
+  [1/2, "½"],
+  [5/8, "⅝"],
+  [2/3, "⅔"],
+  [3/4, "¾"],
+  [7/8, "⅞"],
+  [1, ""]
+];
+function isKitchenFractionUnit(unit){
+  return VOLUME_FRACTION_UNITS.has(String(unit || "").toLowerCase());
+}
+function kitchenAmountText(amount, unit){
+  const x = Number(amount);
+  if(!Number.isFinite(x)) return "";
+  if(!isKitchenFractionUnit(unit)) return fmt(x);
+  const sign = x < 0 ? "-" : "";
+  const abs = Math.abs(x);
+  let whole = Math.floor(abs + 1e-9);
+  let frac = abs - whole;
+  let best = KITCHEN_FRACTIONS[0];
+  let bestDiff = Math.abs(frac - best[0]);
+  for(const candidate of KITCHEN_FRACTIONS){
+    const diff = Math.abs(frac - candidate[0]);
+    if(diff < bestDiff){
+      best = candidate;
+      bestDiff = diff;
+    }
+  }
+  // Only convert when the decimal is clearly intended to be a common kitchen fraction.
+  if(bestDiff > 0.015) return fmt(x);
+  if(best[0] === 1){
+    whole += 1;
+    frac = 0;
+    best = KITCHEN_FRACTIONS[0];
+  }
+  const wholeText = whole ? String(whole) : "";
+  const fracText = best[1] || "";
+  const body = wholeText + fracText;
+  return sign + (body || "0");
+}
+function parseKitchenAmount(value){
+  const raw = String(value ?? "").trim().replace(/,/g,".");
+  if(!raw) return null;
+  if(/^-?\d+(?:\.\d+)?$/.test(raw)) return Number(raw);
+
+  let sign = 1;
+  let s = raw;
+  if(s.startsWith("-")){
+    sign = -1;
+    s = s.slice(1).trim();
+  }
+
+  for(const [glyph, decimal] of Object.entries(UNICODE_FRACTIONS)){
+    if(s.includes(glyph)){
+      const wholeText = s.replace(glyph,"").trim();
+      const whole = wholeText ? Number(wholeText) : 0;
+      if(Number.isFinite(whole)) return sign * (whole + decimal);
+    }
+  }
+
+  let m = s.match(/^(\d+)\s+(\d+)\/(\d+)$/);
+  if(m){
+    const whole=Number(m[1]), a=Number(m[2]), b=Number(m[3]);
+    if(b) return sign * (whole + a/b);
+  }
+  m = s.match(/^(\d+)\/(\d+)$/);
+  if(m){
+    const a=Number(m[1]), b=Number(m[2]);
+    if(b) return sign * (a/b);
+  }
+  const fallback = Number(s);
+  return Number.isFinite(fallback) ? sign * fallback : null;
+}
 
 function guessTimerMinutes(text){
   const raw = String(text || "").toLowerCase().replace(/,/g,".");
@@ -817,7 +896,7 @@ function renderRecipeOverview(id){
           <div class="overview-list">
             ${r.ingredients.map(i => `
               <div class="overview-row">
-                <strong>${fmt(i.amount)} ${esc(i.unit)}</strong>
+                <strong>${esc(kitchenAmountText(i.amount, i.unit))} ${esc(i.unit)}</strong>
                 <span>${esc(i.name)}</span>
               </div>
             `).join("")}
@@ -1258,7 +1337,7 @@ function renderProdChecklist(){
     return `
       <label class="checkline">
         <input type="checkbox" class="prod-check" data-kind="ingredient" data-key="${esc(key)}" ${checked?"checked":""}>
-        <span><strong>${fmt(scaledAmount(i.amount, scale))} ${esc(i.unit)}</strong> ${esc(i.name)}</span>
+        <span><strong>${esc(kitchenAmountText(scaledAmount(i.amount, scale), i.unit))} ${esc(i.unit)}</strong> ${esc(i.name)}</span>
       </label>`;
   }).join("");
 
@@ -1489,8 +1568,9 @@ function renderLab(){
   renderLabHistory();
 }
 function renderAmountControls(context, row, idx){
-  const isVol = VOLUME_FRACTION_UNITS.has(String(row.unit).toLowerCase());
-  return `<input class="amount-input" inputmode="decimal" type="number" step="any" data-context="${context}" data-idx="${idx}" value="${fmt(row.amount)}">
+  const isVol = isKitchenFractionUnit(row.unit);
+  const displayAmount = isVol ? kitchenAmountText(row.amount, row.unit) : fmt(row.amount);
+  return `<input class="amount-input" inputmode="decimal" type="text" data-context="${context}" data-idx="${idx}" value="${esc(displayAmount)}" aria-label="Ingredient amount">
     ${isVol ? `<div class="fractions">${FRACTION_BUTTONS.map(([lab,val]) => `<button type="button" class="frac-btn" data-context="${context}" data-idx="${idx}" data-frac="${val}">${lab}</button>`).join("")}</div>` : ""}`;
 }
 function renderLabIngredients(){
@@ -1503,7 +1583,7 @@ function renderLabIngredients(){
       <div class="ingredient-row ${changed ? "changed" : ""}">
         <div class="namecell">
           <strong>${esc(i.name)}</strong>
-          <div class="small">Official at this size: ${fmt(officialScaled)} ${esc(official[idx].unit)}</div>
+          <div class="small">Official at this size: ${esc(kitchenAmountText(officialScaled, official[idx].unit))} ${esc(official[idx].unit)}</div>
         </div>
         <div><label>Amount</label>${renderAmountControls("lab", i, idx)}</div>
         <div><label>Unit</label><button type="button" class="unit-btn" data-context="lab" data-idx="${idx}">${esc(i.unit || "Select")}</button></div>
@@ -1518,10 +1598,22 @@ function ingredientTarget(context){
   return importDraft.ingredients;
 }
 function bindIngredientEditors(context, host){
-  $$(".amount-input", host).forEach(el => el.addEventListener("input", e => {
-    const idx = Number(e.target.dataset.idx);
-    ingredientTarget(context)[idx].amount = num(e.target.value);
-  }));
+  $(".amount-input", host).forEach(el => {
+    el.addEventListener("input", e => {
+      const idx = Number(e.target.dataset.idx);
+      const parsed = parseKitchenAmount(e.target.value);
+      if(parsed !== null) ingredientTarget(context)[idx].amount = parsed;
+    });
+    el.addEventListener("blur", e => {
+      const idx = Number(e.target.dataset.idx);
+      const target = ingredientTarget(context);
+      const parsed = parseKitchenAmount(e.target.value);
+      if(parsed !== null) target[idx].amount = parsed;
+      e.target.value = isKitchenFractionUnit(target[idx].unit)
+        ? kitchenAmountText(target[idx].amount, target[idx].unit)
+        : fmt(target[idx].amount);
+    });
+  });
   $$(".frac-btn", host).forEach(btn => btn.addEventListener("click", () => {
     const idx = Number(btn.dataset.idx);
     const frac = Number(btn.dataset.frac);
