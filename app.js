@@ -1,8 +1,8 @@
 (() => {
 "use strict";
 
-const BUILD_VERSION = "2.10.1";
-const BUILD_NAME = "Kitchen Fractions + Photo Recipe Scan";
+const BUILD_VERSION = "2.10.2";
+const BUILD_NAME = "Recipe Lab History + Kitchen Fractions";
 const STORAGE_KEY = "recipeApp_forest_v24";
 const VOLUME_FRACTION_UNITS = new Set(["cup","cups","tbsp","tablespoon","tablespoons","tsp","teaspoon","teaspoons"]);
 const UNIT_GROUPS = {
@@ -1692,6 +1692,13 @@ function promoteLabTest(){
   labDraft = null;
   renderAll();
 }
+function labDecisionLabel(value, promoted=false){
+  if(promoted) return "Promoted to official";
+  if(value === "winner") return "Winner — ready to become official";
+  if(value === "good") return "Good — keep as candidate";
+  if(value === "needs-work") return "Needs another test";
+  return value || "Saved";
+}
 function renderLabHistory(){
   const host = $("#labHistory");
   const tests = [...(getRecipe().tests || [])].reverse();
@@ -1699,17 +1706,57 @@ function renderLabHistory(){
     host.innerHTML = `<div class="empty">No tests yet.</div>`;
     return;
   }
-  host.innerHTML = tests.map(t => `
-    <div class="test-card">
-      <div class="section-head" style="margin-bottom:4px">
-        <div><strong>Test #${t.number}: ${esc(t.title || "Untitled test")}</strong><div class="small">${new Date(t.createdAt).toLocaleString()} · based on v${t.baseOfficialVersion}</div></div>
-        <span class="badge">${esc(t.promoted ? "Promoted" : (t.decision || "Saved"))}</span>
-      </div>
-      ${t.ratings?.overall != null ? `<div><strong>Overall:</strong> ${t.ratings.overall}/5</div>` : ""}
-      ${t.resultNotes ? `<div style="margin-top:7px"><strong>Result:</strong> ${esc(t.resultNotes)}</div>` : ""}
-      ${t.nextTime ? `<div class="note" style="margin-top:10px"><strong>Next time:</strong> ${esc(t.nextTime)}</div>` : ""}
-    </div>
-  `).join("");
+  host.innerHTML = tests.map(t => {
+    const changedIngredients = (t.ingredients || []).filter(i => {
+      const current = Number(i.amount);
+      const base = Number(i.baseAmount);
+      return Number.isFinite(current) && Number.isFinite(base) && Math.abs(current - (base * Number(t.scale || 1))) > 0.0001;
+    });
+    const ratingItems = ["overall","taste","texture","appearance"]
+      .filter(k => t.ratings?.[k] != null)
+      .map(k => `<div class="history-rating"><span>${esc(k[0].toUpperCase()+k.slice(1))}</span><strong>${esc(t.ratings[k])}/5</strong></div>`)
+      .join("");
+    return `
+      <details class="test-card test-history-card">
+        <summary class="test-history-summary">
+          <div class="test-history-summary-main">
+            <strong>Test #${esc(t.number)}: ${esc(t.title || "Untitled test")}</strong>
+            <div class="small">${esc(new Date(t.createdAt).toLocaleString())} · based on v${esc(t.baseOfficialVersion)}</div>
+          </div>
+          <span class="badge">${esc(t.promoted ? "Promoted" : (t.decision === "needs-work" ? "Needs work" : t.decision === "good" ? "Candidate" : t.decision === "winner" ? "Winner" : "Saved"))}</span>
+        </summary>
+
+        <div class="test-history-details">
+          <div class="history-meta-row">
+            <div><span class="small">Batch size</span><strong>${esc(t.scale || 1)}×</strong></div>
+            <div><span class="small">Decision</span><strong>${esc(labDecisionLabel(t.decision, t.promoted))}</strong></div>
+          </div>
+
+          ${t.changeReason ? `<div class="history-block"><strong>What I changed / why</strong><div>${esc(t.changeReason)}</div></div>` : ""}
+
+          ${changedIngredients.length ? `
+            <div class="history-block">
+              <strong>Ingredient changes</strong>
+              <div class="history-ingredient-list">
+                ${changedIngredients.map(i => {
+                  const scale = Number(t.scale || 1);
+                  const originalScaled = Number(i.baseAmount) * scale;
+                  return `<div><span>${esc(i.name)}</span><strong>${esc(kitchenAmountText(originalScaled, i.unit))} → ${esc(kitchenAmountText(i.amount, i.unit))} ${esc(i.unit)}</strong></div>`;
+                }).join("")}
+              </div>
+            </div>
+          ` : ""}
+
+          ${ratingItems ? `<div class="history-ratings">${ratingItems}</div>` : ""}
+
+          ${t.resultNotes ? `<div class="history-block"><strong>What happened</strong><div>${esc(t.resultNotes)}</div></div>` : ""}
+          ${t.nextTime ? `<div class="note history-next"><strong>Next time, try…</strong><div style="margin-top:5px">${esc(t.nextTime)}</div></div>` : ""}
+
+          ${!t.changeReason && !changedIngredients.length && !ratingItems && !t.resultNotes && !t.nextTime ? `<div class="small">No additional notes were saved for this test.</div>` : ""}
+        </div>
+      </details>
+    `;
+  }).join("");
 }
 
 function friendlyOcrStatus(status){
