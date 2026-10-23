@@ -500,3 +500,93 @@ body.recipe-search-active .recipe-search-field{
 @media(max-width:560px){
   .import-method-grid{grid-template-columns:1fr}
 }
+
+
+/* V2.10.2 Recipe Lab test history */
+#view-lab{padding-bottom:28px}
+.test-history-card{
+  padding:0;
+  overflow:hidden;
+}
+.test-history-summary{
+  list-style:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:15px;
+  cursor:pointer;
+  user-select:none;
+}
+.test-history-summary::-webkit-details-marker{display:none}
+.test-history-summary::after{
+  content:"›";
+  flex:none;
+  font-size:1.5rem;
+  font-weight:900;
+  transform:rotate(90deg);
+  color:var(--muted);
+  transition:transform .15s ease;
+}
+.test-history-card[open] .test-history-summary::after{transform:rotate(-90deg)}
+.test-history-summary-main{flex:1;min-width:0}
+.test-history-summary-main strong{display:block;line-height:1.3}
+.test-history-details{
+  border-top:1px solid var(--line);
+  padding:14px 15px 16px;
+  display:grid;
+  gap:12px;
+}
+.history-meta-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.history-meta-row>div{
+  border:1px solid var(--line);
+  background:#faf7f0;
+  border-radius:14px;
+  padding:10px 12px;
+}
+.history-meta-row .small{display:block;margin-bottom:3px}
+.history-block{
+  display:grid;
+  gap:6px;
+  line-height:1.45;
+}
+.history-ingredient-list{
+  display:grid;
+  gap:7px;
+}
+.history-ingredient-list>div{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:12px;
+  padding:9px 10px;
+}
+.history-ingredient-list strong{text-align:right}
+.history-ratings{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+.history-rating{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  border:1px solid var(--line);
+  background:#faf7f0;
+  border-radius:12px;
+  padding:9px 10px;
+}
+.history-next{margin-top:0}
+@media(max-width:560px){
+  .test-history-summary{align-items:flex-start}
+  .test-history-summary .badge{max-width:110px;text-align:center;justify-content:center}
+  .history-meta-row{grid-template-columns:1fr}
+  .history-ingredient-list>div{display:grid;gap:3px}
+  .history-ingredient-list strong{text-align:left}
+}
