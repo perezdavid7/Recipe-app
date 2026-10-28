@@ -140,8 +140,11 @@ main{margin-top:8px}
 .ingredient-row.flagged{background:#fff8f0;border-color:#efc37f}
 .unit-btn{
   width:100%;min-height:46px;border:1px solid #d9cfbc;border-radius:14px;background:#fcfaf5;
-  text-align:left;padding:11px 12px
+  text-align:left;padding:11px 12px;display:flex;align-items:center;justify-content:space-between;gap:4px;
 }
+.unit-btn .unit-chevron{font-size:1.25rem;color:var(--forest);line-height:1}
+.add-ingredient-bottom{margin:12px 0 20px}
+.add-ingredient-bottom button{width:100%;border-style:dashed;color:var(--forest);font-weight:850}
 .fractions{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
 .fractions button{
   min-height:34px;padding:5px 10px;border-radius:12px;border:1px solid var(--line);background:#fbf9f4;font-size:.82rem
