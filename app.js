@@ -1,8 +1,8 @@
 (() => {
 "use strict";
 
-const BUILD_VERSION = "2.10.2";
-const BUILD_NAME = "Recipe Lab History + Kitchen Fractions";
+const BUILD_VERSION = "2.10.3";
+const BUILD_NAME = "Recipe Lab History + Kitchen Fractions + Ingredient Editor";
 const STORAGE_KEY = "recipeApp_forest_v24";
 const VOLUME_FRACTION_UNITS = new Set(["cup","cups","tbsp","tablespoon","tablespoons","tsp","teaspoon","teaspoons"]);
 const UNIT_GROUPS = {
@@ -1050,9 +1050,12 @@ function renderRecipeEditor(){
 
       <div class="section-head">
         <div><h3>Ingredients</h3></div>
-        <button class="small" id="addEditIngredient">+ Ingredient</button>
+        <button class="small" id="addEditIngredient">+ Add Ingredient</button>
       </div>
       <div id="editIngredients"></div>
+      <div class="add-ingredient-bottom">
+        <button class="ghost" type="button" id="addEditIngredientBottom">+ Add Another Ingredient</button>
+      </div>
 
       <div class="section-head" style="margin-top:12px">
         <div><h3>Process</h3></div>
@@ -1070,10 +1073,18 @@ function renderRecipeEditor(){
   $("#editName").addEventListener("input",e=>editDraft.name=e.target.value);
   $("#editCategory").addEventListener("input",e=>editDraft.category=e.target.value);
   $("#editYield").addEventListener("input",e=>editDraft.yieldText=e.target.value);
-  $("#addEditIngredient").addEventListener("click",()=>{
+  const addIngredient = () => {
     editDraft.ingredients.push({id:uid("ing"),amount:null,unit:"",name:""});
-    renderRecipeEditor();
-  });
+    renderEditIngredients();
+    const inputs = $$(".edit-ing-name", $("#editIngredients"));
+    const newInput = inputs[inputs.length - 1];
+    if(newInput){
+      newInput.scrollIntoView({behavior:"smooth",block:"center"});
+      newInput.focus({preventScroll:true});
+    }
+  };
+  $("#addEditIngredient").addEventListener("click",addIngredient);
+  $("#addEditIngredientBottom").addEventListener("click",addIngredient);
   $("#addEditStep").addEventListener("click",()=>{
     editDraft.steps.push({id:uid("step"),text:"",videoUrl:"",timedStep:false,timerMinutes:null});
     renderRecipeEditor();
@@ -1089,7 +1100,7 @@ function renderRecipeEditor(){
 function renderEditIngredients(){
   const host = $("#editIngredients");
   if(!editDraft.ingredients.length){
-    host.innerHTML = `<div class="empty">No ingredients. Add one above.</div>`;
+    host.innerHTML = `<div class="empty">No ingredients. Use Add Ingredient above or below.</div>`;
     return;
   }
   host.innerHTML = editDraft.ingredients.map((i,idx)=>`
@@ -1100,7 +1111,7 @@ function renderEditIngredients(){
         <button class="ghost small remove-edit-ing" data-idx="${idx}" style="margin-top:7px">Remove</button>
       </div>
       <div><label>Amount</label>${renderAmountControls("edit",i,idx)}</div>
-      <div><label>Unit</label><button type="button" class="unit-btn" data-context="edit" data-idx="${idx}">${esc(i.unit || "Select")}</button></div>
+      <div><label>Unit</label><button type="button" class="unit-btn" data-context="edit" data-idx="${idx}" aria-label="Change unit for ${esc(i.name || "new ingredient")}"><span>${esc(i.unit || "Select")}</span><span class="unit-chevron" aria-hidden="true">⌄</span></button></div>
     </div>
   `).join("");
   bindIngredientEditors("edit",host);
@@ -1109,7 +1120,7 @@ function renderEditIngredients(){
   }));
   $$(".remove-edit-ing",host).forEach(btn=>btn.addEventListener("click",()=>{
     editDraft.ingredients.splice(Number(btn.dataset.idx),1);
-    renderRecipeEditor();
+    renderEditIngredients();
   }));
 }
 
@@ -1598,7 +1609,7 @@ function ingredientTarget(context){
   return importDraft.ingredients;
 }
 function bindIngredientEditors(context, host){
-  $(".amount-input", host).forEach(el => {
+  $$(".amount-input", host).forEach(el => {
     el.addEventListener("input", e => {
       const idx = Number(e.target.dataset.idx);
       const parsed = parseKitchenAmount(e.target.value);
@@ -1621,7 +1632,7 @@ function bindIngredientEditors(context, host){
     const current = Number(target[idx].amount || 0);
     target[idx].amount = Math.floor(Math.max(0, current)) + frac;
     if(context === "lab") renderLabIngredients();
-    else if(context === "edit") renderRecipeEditor();
+    else if(context === "edit") renderEditIngredients();
     else renderImportReview();
   }));
   $$(".unit-btn", host).forEach(btn => btn.addEventListener("click", () => openUnitPicker(context, Number(btn.dataset.idx))));
@@ -1664,7 +1675,7 @@ function setPickedUnit(unit){
   target[idx].unit = unit;
   closeUnitPicker();
   if(context === "lab") renderLabIngredients();
-  else if(context === "edit") renderRecipeEditor();
+  else if(context === "edit") renderEditIngredients();
   else renderImportReview();
 }
 function saveLabTest(){
